@@ -1,33 +1,32 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-using Core;
+﻿using CS1L.Core;
 using CS1L.Server.Data;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Server.Data;
+using Server.Logger;
 using Shared.Routes.Server;
 
 var builder = WebApplication.CreateBuilder(args);
-
-StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
-
-builder.Services.AddCors();
-
-builder.Services.AddControllers();
-
-builder.Host.UseSerilog((ctx, logger) =>
 {
-    logger.ReadFrom.Configuration(ctx.Configuration);
-});
+    StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
 
-builder.Services.AddControllers();
-builder.Services.AddDbContextFactory<TestsContext>(options =>
-{
-    options.UseNpgsql(TestsContext.ConnectionString)
-    .UseSnakeCaseNamingConvention();
-});
+    builder.Services.AddCors();
+
+    builder.Services.AddControllers();
+
+    builder.Host.UseSerilog((ctx, logger) =>
+    {
+        logger.ReadFrom.Configuration(ctx.Configuration);
+    });
+
+    builder.Host.AddLogger();
+
+    builder.Services.AddCore();
+    builder.Services.AddData();
+
+    builder.Services.AddControllers();
+}
 
 var app = builder.Build();
 {
@@ -49,7 +48,4 @@ var app = builder.Build();
     app.MapFallbackToFile(ServerRoutes.FallbackFileName);
 }
 
-app.Services.GetService<IDbContextFactory<TestsContext>>()!.CreateDbContext().Tests.Count();
-
 app.Run();
-

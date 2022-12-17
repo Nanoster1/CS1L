@@ -9,8 +9,7 @@ namespace CS1L.Server.Data;
 
 public class TestsContext : DbContext
 {
-    public const string ConnectionString =
-        "Password=slava_pussy;Host=un1ver5e.ddns.net;Port=7777;Database=postgres;User ID=postgres;";
+    public const string ConnectionString = "Database";
     public DbSet<Test> Tests { get; set; } = null!;
     public DbSet<Question> Questions { get; set; } = null!;
     public DbSet<Answer> Answers { get; set; } = null!;
@@ -23,15 +22,6 @@ public class TestsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Test>()
-            .HasMany(t => t.Questions)
-            .WithOne();
-
-        modelBuilder.Entity<Question>()
-            .HasMany(q => q.Answers)
-            .WithOne();
-
-
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(TestsContext).Assembly);
     }
-
 }
