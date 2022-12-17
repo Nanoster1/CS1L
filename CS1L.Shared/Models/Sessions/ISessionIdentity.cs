@@ -8,4 +8,7 @@ public interface ISessionIdentity
 {
     Guid Id { get; }
     long VkId { get; }
+    int Version { get; set; }
+
+    void StateHasChanged() => Version++;
 }
