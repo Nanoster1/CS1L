@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Serilog;
 using CS1L.Server.Logger;
 using CS1L.Shared.Routes.Server;
+using CS1L.Server.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -30,6 +31,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 {
+    app.UseResponseCompression();
+
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseWebAssemblyDebugging();
@@ -39,6 +42,8 @@ var app = builder.Build();
 
     app.UseRouting();
 
+    app.MapRazorPages();
+    app.MapHubs();
     app.MapControllers();
     app.MapFallbackToFile(ServerRoutes.FallbackFileName);
 }

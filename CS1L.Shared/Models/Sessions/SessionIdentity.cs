@@ -6,9 +6,7 @@ namespace CS1L.Shared.Models.Sessions;
 
 public abstract class SessionIdentity
 {
-    public Guid Id { get; }
-    public long VkId { get; }
-    public int Version { get; set; }
-
-    public void StateHasChanged() => Version++;
+    public abstract Guid Id { get; set; }
+    public abstract long VkId { get; set; }
+    public abstract int Version { get; set; }
 }

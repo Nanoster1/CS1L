@@ -10,8 +10,8 @@ namespace CS1L.Shared.Models.Sessions;
 public class HostSession : SessionIdentity
 {
     public ConcurrentDictionary<Guid, PlayerSession> Players = new();
-    public Guid Id { get; set; }
-    public long VkId { get; set; }
-    public int Version { get; set; } = 1;
+    public override Guid Id { get; set; }
+    public override long VkId { get; set; }
+    public override int Version { get; set; } = 1;
     public Test Test { get; init; } = null!;
 }

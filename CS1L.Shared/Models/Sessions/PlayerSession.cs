@@ -6,10 +6,10 @@ namespace CS1L.Shared.Models.Sessions;
 
 public class PlayerSession : SessionIdentity
 {
-    public Guid Id { get; set; }
-    public long VkId { get; set; }
+    public override Guid Id { get; set; }
+    public override long VkId { get; set; }
     public Guid HostId { get; set; }
-    public int Version { get; set; } = 1;
+    public override int Version { get; set; } = 1;
     public string Nickname { get; set; } = string.Empty;
     public int Score { get; set; } = 0;
     public PlayerSessionStatus Status { get; set; }

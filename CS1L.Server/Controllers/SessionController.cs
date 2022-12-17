@@ -29,46 +29,5 @@ public class SessionController : ApiController
         return Ok(session);
     }
 
-    [HttpPost("connect")]
-    public ActionResult<PlayerSession> Connect(GameConnectDto dto)
-    {
-        var session = _hostSessionService.Connect(dto);
-        if (session is null) return NotFound();
-        return Ok(session);
-    }
-
-    [HttpGet("host/check")]
-    public ActionResult CheckHostSession([FromQuery] Guid hostSessionId, [FromQuery] int version)
-    {
-        var result = _hostSessionService.CheckHostSession(hostSessionId, version);
-        if (result is null) return NotFound();
-        return Ok(result);
-    }
-
-    [HttpGet("player/check")]
-    public ActionResult<bool> CheckPlayerSession(
-        [FromQuery] Guid hostSessionId,
-        [FromQuery] Guid playerSessionId,
-        [FromQuery] int version)
-    {
-        var result = _hostSessionService.CheckPlayerSession(hostSessionId, playerSessionId, version);
-        if (result is null) return NotFound();
-        return Ok(result);
-    }
-
-    [HttpGet("host")]
-    public ActionResult<HostSession> GetHostSession([FromQuery] Guid hostSessionId)
-    {
-        var session = _hostSessionService.GetHostSession(hostSessionId);
-        if (session is null) return NotFound();
-        return Ok(session);
-    }
-
-    [HttpGet("player")]
-    public ActionResult<PlayerSession> GetPlayerSession([FromQuery] Guid hostSessionId, [FromQuery] Guid playerSessionId)
-    {
-        var playerSession = _hostSessionService.GetPlayerSession(hostSessionId, playerSessionId);
-        if (playerSession is null) return NotFound();
-        return Ok(playerSession);
-    }
+    
 }
