@@ -12,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddCors();
 
     builder.Services.AddControllers();
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
 
     builder.Host.UseSerilog((ctx, logger) =>
     {
@@ -21,21 +23,16 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Host.AddLogger();
 
     builder.Services.AddCore();
-    builder.Services.AddData();
+    builder.Services.AddData(builder.Configuration);
 
     builder.Services.AddControllers();
 }
 
 var app = builder.Build();
 {
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseWebAssemblyDebugging();
-    }
-    else
-    {
-        app.UseExceptionHandler(ServerRoutes.Controllers.Error.Prefix);
-    }
+    app.UseSwagger();
+    app.UseSwaggerUI();
+    app.UseWebAssemblyDebugging();
 
     app.UseBlazorFrameworkFiles();
     app.UseStaticFiles();

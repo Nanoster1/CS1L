@@ -4,7 +4,7 @@
 
 namespace CS1L.Shared.Models.DTOs;
 
-public record GameConnectDTO(
+public record GameConnectDto(
     Guid HostId,
     long VkId,
     string NickName);

@@ -14,25 +14,24 @@ namespace CS1L.Server.Controllers;
 [Route("tests")]
 public class TestsController : Controller
 {
-    private readonly IDbContextFactory<TestsContext> _dbfactory;
+    private readonly IDbContextFactory<TestsContext> _dbFactory;
 
-    public TestsController(IDbContextFactory<TestsContext> dbfactory)
+    public TestsController(IDbContextFactory<TestsContext> dbFactory)
     {
-        _dbfactory = dbfactory;
+        _dbFactory = dbFactory;
     }
 
     [HttpGet]
-    public async Task<IActionResult> FetchAllAsync()
+    public async Task<IActionResult> GetAllAsync()
     {
-        using var ctx = await _dbfactory.CreateDbContextAsync();
-
+        using var ctx = await _dbFactory.CreateDbContextAsync();
         return Ok(ctx.Tests.ToArray());
     }
 
     [HttpPost]
     public async Task AddAsync([FromBody] Test test)
     {
-        using var ctx = await _dbfactory.CreateDbContextAsync();
+        using var ctx = await _dbFactory.CreateDbContextAsync();
         ctx.Add(test);
         await ctx.SaveChangesAsync();
     }
