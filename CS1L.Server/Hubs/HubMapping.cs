@@ -4,6 +4,6 @@ public static class HubMapping
 {
     public static void MapHubs(this WebApplication app)
     {
-        app.MapHub<SessionHub>("session");
+        app.MapHub<SessionHub>("/session");
     }
 }
