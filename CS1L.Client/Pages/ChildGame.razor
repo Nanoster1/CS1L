@@ -1,5 +1,79 @@
-﻿<h3>ChildGame</h3>
+﻿@page "/game"
+@using CS1L.Shared.Models
 
-@code {
+<MudImage Src="images/mony.jpg" Alt="Mony the dog" Elevation="25" Class="rounded-lg"/>
+<MudText Typo="Typo.subtitle1">subtitle1. Lorem ipsum dolor sit amet, consectetur
+    adipisicing elit. Quos blanditiis tenetur</MudText>
+
+<MudChipSet @bind-SelectedChip="selected" Filter="true" Style="display: flex;">
+    @for (int i = 0; i < Chips.Length; i++)
+    {
+        <MudChip Style="width: 100%; height: 100%" Color="@Chips[i].Color" Text="@Chips[i].Text"></MudChip>
+    }
+</MudChipSet >
+
+@code{
+    public Question Question = new Question();
+    MudChip selected;
     
+    MudChip[] Chips = new MudChip[4];
+
+    protected override void OnInitialized()
+    {
+        Question = new Question()
+        {
+            Text = "ахахах",
+            Answers = new List<Answer>()
+            {
+                new Answer()
+                {
+                    Text = "111",
+                    IsCorrect = false
+                },
+                new Answer()
+                {
+                    Text = "222",
+                    IsCorrect = false
+                },
+                new Answer()
+                {
+                    Text = "333",
+                    IsCorrect = true
+                },
+                new Answer()
+                {
+                    Text = "444",
+                    IsCorrect = false
+                },
+            }
+        };
+
+
+        Chips = new MudChip[4];
+        for (int i = 0; i < Question.Answers.Count; i++)
+        {
+            Chips[i] = new MudChip();
+            Chips[i].Text = String.Copy(Question.Answers[i].Text);
+        }
+
+
+        StateHasChanged();
+    }
+
+    void EndTime()
+    {
+        for (int i = 0; i < Question.Answers.Count; i++)
+        {
+            if (Question.Answers[i].IsCorrect)
+            {
+                Chips[i].Disabled = Question.Answers[i].IsCorrect;
+                Chips[i].Color = Color.Dark;
+            }
+                
+        }
+        StateHasChanged();
+    }
+
+  
+
 }
