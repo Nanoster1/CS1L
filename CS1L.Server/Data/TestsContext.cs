@@ -22,6 +22,19 @@ public class TestsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+<<<<<<< HEAD
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(TestsContext).Assembly);
+=======
+        modelBuilder.Entity<Test>()
+            .HasMany(t => t.Questions)
+            .WithOne();
+
+        modelBuilder.Entity<Question>()
+            .HasMany(q => q.Answers)
+            .WithOne();
+
+
+>>>>>>> d91f58b5983e8518bcf7e06c9fc636fd213dddbc
     }
+
 }
