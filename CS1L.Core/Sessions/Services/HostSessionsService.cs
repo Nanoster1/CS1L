@@ -9,7 +9,11 @@ namespace CS1L.Core.Sessions.Services;
 public class HostSessionsService
 {
     private readonly Dictionary<Guid, HostSession> _storage = new();
+
     public HostSession? GetSession(Guid id) => _storage.GetValueOrDefault(id);
+
+    public bool RemoveSession(Guid id) => _storage.Remove(id);
+
     public HostSession CreateSession(long vkId)
     {
         HostSession session = new()
@@ -20,5 +24,11 @@ public class HostSessionsService
         _storage.Add(session.Id, session);
         return session;
     }
-    public bool RemoveSession(Guid id) => _storage.Remove(id);
+
+    public bool? Check(Guid sessionId, int version)
+    {
+        var session = GetSession(sessionId);
+        if (session is null) return null;
+        return session.Version == version;
+    }
 }
