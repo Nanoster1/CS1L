@@ -23,7 +23,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Host.AddLogger();
 
     builder.Services.AddCore();
-    builder.Services.AddData();
+    builder.Services.AddData(builder.Configuration);
 
     builder.Services.AddControllers();
 }

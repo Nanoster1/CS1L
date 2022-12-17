@@ -7,11 +7,11 @@ namespace CS1L.Server.Data;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddData(this IServiceCollection services)
+    public static IServiceCollection AddData(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContextFactory<TestsContext>(options =>
         {
-            options.UseNpgsql(TestsContext.ConnectionString)
+            options.UseNpgsql(configuration.GetConnectionString(TestsContext.ConnectionString))
                 .UseSnakeCaseNamingConvention();
         });
 
