@@ -3,10 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Concurrent;
-using CS1L.Core.Sessions.Interfaces;
 using CS1L.Shared.Models.Tests;
 
-namespace CS1L.Core.Sessions.Models;
+namespace CS1L.Shared.Models.Sessions;
 
 public class HostSession : ISessionIdentity
 {

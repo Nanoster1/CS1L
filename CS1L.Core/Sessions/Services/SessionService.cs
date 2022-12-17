@@ -3,9 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Concurrent;
-using CS1L.Core.Sessions.Models;
 using CS1L.Core.Tests.Interfaces;
 using CS1L.Shared.Models.DTOs;
+using CS1L.Shared.Models.Sessions;
 
 namespace CS1L.Core.Sessions.Services;
 
