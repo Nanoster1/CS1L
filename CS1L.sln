@@ -7,9 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CS1L.Client", "CS1L.Client\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CS1L.Core", "CS1L.Core\CS1L.Core.csproj", "{6B532101-BF19-446A-9126-59DF93B9A263}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CS1L.Migrations", "CS1L.Migrations\Migrations.csproj", "{47BF6CC9-65CE-4F51-AD4B-89B30A2630F1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CS1L.Shared", "CS1L.Shared\CS1L.Shared.csproj", "{7A447FE0-711D-4C4B-9D24-772BF05BC86F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CS1L.Server", "CS1L.Server\CS1L.Server.csproj", "{D897260E-AA62-471D-B7AE-4F8CCC36D76A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CS1L.Migrations", "CS1L.Migrations\CS1L.Migrations.csproj", "{C425AF3F-437F-4910-9654-272E66595860}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +38,13 @@ Global
 		{7A447FE0-711D-4C4B-9D24-772BF05BC86F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A447FE0-711D-4C4B-9D24-772BF05BC86F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A447FE0-711D-4C4B-9D24-772BF05BC86F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D897260E-AA62-471D-B7AE-4F8CCC36D76A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D897260E-AA62-471D-B7AE-4F8CCC36D76A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D897260E-AA62-471D-B7AE-4F8CCC36D76A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D897260E-AA62-471D-B7AE-4F8CCC36D76A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C425AF3F-437F-4910-9654-272E66595860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C425AF3F-437F-4910-9654-272E66595860}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C425AF3F-437F-4910-9654-272E66595860}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C425AF3F-437F-4910-9654-272E66595860}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
