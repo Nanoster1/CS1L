@@ -4,6 +4,10 @@
 
 namespace CS1L.Shared.Models;
 
-public record Answer(
-    int Id,
-    string Name);
+public class Answer
+{
+    public int Id { get; set; }
+    public int QuestionId { get; set; }
+    public string Text { get; set; } = string.Empty;
+    public bool IsCorrect { get; set; }
+}
