@@ -18,7 +18,7 @@ public class SessionManager : ISessionManager
         return session.Id;
     }
 
-    public Session? GeById(Guid id)
+    public Session? GetById(Guid id)
     {
         _sessions.TryGetValue(id, out var session);
         if (session is not null) UpdateTimer(session);
