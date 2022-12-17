@@ -13,7 +13,7 @@ public class HostSession : ISessionIdentity
     public Guid Id { get; set; }
     public long VkId { get; set; }
     public int Version { get; set; } = 1;
-    public Test Test { get; init; }
+    public required Test Test { get; init; }
 
     public PlayerSession? GetPlayer(Guid id) => _players.GetValueOrDefault(id);
     public PlayerSession CreatePlayer(long vkId, string nickname)

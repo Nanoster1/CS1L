@@ -1,5 +1,8 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 using CS1L.Core.Sessions.Models;
-using CS1L.Core.Sessions.Services;
 using CS1L.Core.Sessions.Services;
 using CS1L.Server.Controllers.Common;
 using CS1L.Server.Data;
@@ -25,7 +28,7 @@ public class SessionController : ApiController
     public async Task<ActionResult> CreateLobbyAsync(long userId, int testId)
     {
         using TestsContext ctx = await _dbContextFactory.CreateDbContextAsync();
-        Test? test = ctx.Tests.FirstOrDefault(t => t.Id == testId);
+        var test = ctx.Tests.FirstOrDefault(t => t.Id == testId);
         if (test is null) return NotFound(test);
 
         var session = _hostSessionService.CreateSession(userId, test);
