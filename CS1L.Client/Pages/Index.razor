@@ -8,7 +8,7 @@
     <MudButton OnClick="GoCreateTest" Variant="Variant.Outlined" Color="Color.Primary">Новая викторина</MudButton>
     <MudButton OnClick="ShowConnectMessage" Variant="Variant.Outlined" Color="Color.Primary">Присоединиться</MudButton>
     <MudButton Variant="Variant.Outlined" Color="Color.Primary">Мои викторины</MudButton>
-    <MudButton Variant="Variant.Outlined" Color="Color.Primary">Все викторины</MudButton>
+    <MudButton OnClick="GoTableTests" Variant="Variant.Outlined" Color="Color.Primary">Все викторины</MudButton>
 </MudContainer>
 
 <MudMessageBox @ref="ConnectBox" Title="Warning" CancelText="Cancel">
@@ -46,9 +46,14 @@
     //TODO отпарвить ключ
         StateHasChanged();
     }
-
+    
     private async Task GoCreateTest()
     {
         NavigationManager.NavigateTo("/create");
+    }
+    
+    private async Task GoTableTests()
+    {
+        NavigationManager.NavigateTo("/table");
     }
 }
