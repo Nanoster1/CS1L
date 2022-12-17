@@ -7,7 +7,7 @@ using CS1L.Shared.Models.Tests;
 
 namespace CS1L.Shared.Models.Sessions;
 
-public class HostSession : ISessionIdentity
+public class HostSession : SessionIdentity
 {
     public ConcurrentDictionary<Guid, PlayerSession> Players = new();
     public Guid Id { get; set; }

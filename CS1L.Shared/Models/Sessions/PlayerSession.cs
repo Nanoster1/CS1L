@@ -4,7 +4,7 @@
 
 namespace CS1L.Shared.Models.Sessions;
 
-public class PlayerSession : ISessionIdentity
+public class PlayerSession : SessionIdentity
 {
     public Guid Id { get; set; }
     public long VkId { get; set; }

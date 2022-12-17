@@ -22,10 +22,10 @@ public class SessionController : ApiController
         _hostSessionService = hostSessionService;
     }
 
-    [HttpPost("[action]")]
-    public async Task<ActionResult> Create(long userId, int testId)
+    [HttpPost("create-lobby")]
+    public async Task<ActionResult> Create(CreateLobbyDTO dto)
     {
-        var session = await _hostSessionService.CreateHostSessionAsync(userId, testId);
+        var session = await _hostSessionService.CreateHostSessionAsync(dto.UserId, dto.TestId);
         return Ok(session);
     }
 
