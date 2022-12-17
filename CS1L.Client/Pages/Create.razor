@@ -1,21 +1,22 @@
 ﻿@page "/create"
 @using CS1L.Shared.Models
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 
+
+<MudContainer Class="d-flex flex-column gap-12">
 @foreach (Question question in Questions)
 {
     <MudContainer>
-        <MudImage Src="images/mony.jpg" Alt="Mony the dog" Elevation="25" Class="rounded-lg"/>
-        <MudTextField T="string" bind-Value="question.Text"
-                      Label="Manual focus" Variant="Variant.Filled"
-                      Lines="3" Adornment="Adornment.End"
-                      AdornmentIcon="@Icons.Filled.CenterFocusWeak"/>
-
+            @*<MudImage Src="images/mony.jpg" Alt="Mony the dog" Elevation="25" Class="rounded-lg"/>*@
+        <MudTextField T="string" @bind-Value="question.Text"
+                      Label="Текст вопроса" Variant="Variant.Filled"/>
         <MudStack>
             @foreach(var answer in question.Answers)
             {
-                <MudContainer>
+                //TODO: номер вопроса
+                <MudContainer Class="d-flex flex-row gap-10 align-baseline">
                     <MudCheckBox @bind-Checked="@(answer.IsCorrect)" Color="Color.Primary"></MudCheckBox>
-                    <MudTextField @bind-Value="@answer.Text" Label="Standard"
+                    <MudTextField @bind-Value="@answer.Text" Label="Ответ"
                                   Variant="Variant.Text"></MudTextField>
                 </MudContainer>
             }
@@ -23,11 +24,25 @@
     </MudContainer>    
 }
 
-<MudIconButton Icon="@Icons.Filled.Add" OnClick="AddQuestion"></MudIconButton>
-
+    <MudIconButton Class="add-button" Icon="@Icons.Material.Filled.Add" Variant="Variant.Outlined" OnClick="AddQuestion" Style="width: fit-content; margin: auto;"></MudIconButton>
+</MudContainer>
 
 @code 
 {
+    private bool _isDarkMode;
+
+    private MudTheme _theme = new();
+
+    private MudThemeProvider _mudThemeProvider;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            StateHasChanged();
+        }
+    }
 
     string nameTest = String.Empty;
     
