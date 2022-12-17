@@ -26,7 +26,7 @@ public class SessionController : ApiController
     {
         var session = _hostSessionService.GetSession(hostSessionId);
         if (session is null) return NotFound();
-        
+
 
         return Ok(session);
     }
