@@ -47,7 +47,7 @@
     
     protected override async Task OnInitializedAsync()
     {
-        AllTests = new List<Test>()
+        /*AllTests = new List<Test>()
         {
             new Test()
             {
@@ -58,14 +58,14 @@
                     new Question()
                 }
             }
-        };
-    // AllTests = (await HttpClient.GetFromJsonAsync<List<Test>>("tests"))!;
+        };*/
+     AllTests = (await HttpClient.GetFromJsonAsync<List<Test>>("tests"))!;
     }
 
     async Task CreateLobby(int TestId)
     { //TODO Добавить id юзера
         
-      //  CreateLobbyDTO userandTestId = new CreateLobbyDTO(0, TestId);
-      // var responce = await HttpClient.PostAsJsonAsync("create-lobby",userandTestId);
+        CreateLobbyDTO userandTestId = new CreateLobbyDTO(0, TestId);
+       var responce = await HttpClient.PostAsJsonAsync("create-lobby",userandTestId);
     }
 }

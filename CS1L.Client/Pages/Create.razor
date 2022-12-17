@@ -1,29 +1,31 @@
 ﻿@page "/create"
-@using CS1L.Shared.Models;
 @using CS1L.Shared.Models.Tests
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager 
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 
-
+<MudButton OnClick="Save">Сохранить</MudButton>
 <MudContainer Class="d-flex flex-column gap-12">
-@foreach (Question question in Questions)
-{
-    <MudContainer>
+    
+    @foreach (Question question in Questions)
+    {
+        <MudContainer>
             @*<MudImage Src="images/mony.jpg" Alt="Mony the dog" Elevation="25" Class="rounded-lg"/>*@
-        <MudTextField T="string" @bind-Value="question.Text"
-                      Label="Текст вопроса" Variant="Variant.Filled"/>
-        <MudStack>
-            @foreach(var answer in question.Answers)
-            {
-                //TODO: номер вопроса
-                <MudContainer Class="d-flex flex-row gap-10 align-baseline">
-                    <MudCheckBox @bind-Checked="@(answer.IsCorrect)" Color="Color.Primary"></MudCheckBox>
-                    <MudTextField @bind-Value="@answer.Text" Label="Ответ"
-                                  Variant="Variant.Text"></MudTextField>
-                </MudContainer>
-            }
-        </MudStack>
-    </MudContainer>    
-}
+            <MudTextField T="string" @bind-Value="question.Text"
+                          Label="Текст вопроса" Variant="Variant.Filled"/>
+            <MudStack>
+                @foreach (var answer in question.Answers)
+                {
+                    //TODO: номер вопроса
+                    <MudContainer Class="d-flex flex-row gap-10 align-baseline">
+                        <MudCheckBox @bind-Checked="@(answer.IsCorrect)" Color="Color.Primary"></MudCheckBox>
+                        <MudTextField @bind-Value="@answer.Text" Label="Ответ"
+                                      Variant="Variant.Text"></MudTextField>
+                    </MudContainer>
+                }
+            </MudStack>
+        </MudContainer>
+    }
 
     <MudIconButton Class="add-button" Icon="@Icons.Material.Filled.Add" Variant="Variant.Outlined" OnClick="AddQuestion" Style="width: fit-content; margin: auto;"></MudIconButton>
 </MudContainer>
@@ -72,5 +74,8 @@
         Test test = new Test();
         test.Questions = Questions;
         test.Name = nameTest;
+        
+        var responce = await HttpClient.PostAsJsonAsync("tests",test);
+        NavigationManager.NavigateTo("/");
     }
 }
