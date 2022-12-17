@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Hosting.StaticWebAssets;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using CS1L.Server.Data;
+using Microsoft.AspNetCore.Hosting.StaticWebAssets;
+using Microsoft.EntityFrameworkCore;
 using Shared.Routes.Server;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
 
 builder.Services.AddControllers();
+builder.Services.AddDbContextFactory<TestsContext>(options =>
+{
+    options.UseNpgsql(TestsContext.ConnectionString);
+});
 
 var app = builder.Build();
 
