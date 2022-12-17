@@ -1,7 +1,6 @@
 ﻿@page "/"
-
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 <PageTitle>Index</PageTitle>
-
 
 <MudContainer Class="container d-flex flex-column gap-10" Style="width:30vw;">
     <MudButton Variant="Variant.Outlined" Color="Color.Primary">Новая викторина</MudButton>
@@ -11,5 +10,18 @@
 </MudContainer>
 
 @code{
+    private bool _isDarkMode;
 
+    private MudTheme _theme = new();
+
+    private MudThemeProvider _mudThemeProvider;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            StateHasChanged();
+        }
+    }
 }
