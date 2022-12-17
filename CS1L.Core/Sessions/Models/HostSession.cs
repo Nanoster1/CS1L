@@ -8,6 +8,20 @@ namespace CS1L.Core.Sessions.Models;
 
 public class HostSession : ISessionIdentity
 {
+    private readonly Dictionary<Guid, PlayerSession> _players = new();
     public Guid Id { get; set; }
     public ulong VkId { get; set; }
+
+    public PlayerSession? GetPlayer(Guid id) => _players.GetValueOrDefault(id);
+    public PlayerSession CreatePlayer(ulong vkId)
+    {
+        PlayerSession player = new()
+        {
+            Id = Guid.NewGuid(),
+            VkId = vkId,
+        };
+        _players[player.Id] = player;
+        return player;
+    }
+    public bool RemovePlayer(Guid id) => _players.Remove(id);
 }
