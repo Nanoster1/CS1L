@@ -1,6 +1,6 @@
 namespace CS1L.Core.Sessions.Models;
 
-public class User
+public class Player
 {
     public required int Id { get; init; }
     public required string Nickname { get; init; }
