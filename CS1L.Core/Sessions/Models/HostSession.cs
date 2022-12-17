@@ -11,7 +11,7 @@ public class HostSession : ISessionIdentity
 {
     private readonly Dictionary<Guid, PlayerSession> _players = new();
     public Guid Id { get; set; }
-    public ulong VkId { get; set; }
+    public long VkId { get; set; }
     public required Test Test { get; init; }
 
     public PlayerSession? GetPlayer(Guid id) => _players.GetValueOrDefault(id);
