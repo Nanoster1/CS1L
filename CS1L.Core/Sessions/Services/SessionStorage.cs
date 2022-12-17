@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
-using CS1L.Core.Sessions.Models;
+using CS1L.Shared.Models.Sessions;
 
 namespace CS1L.Core.Sessions.Services;
 

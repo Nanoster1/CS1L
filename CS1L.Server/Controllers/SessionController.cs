@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using CS1L.Core.Sessions.Models;
 using CS1L.Core.Sessions.Services;
 using CS1L.Server.Controllers.Common;
 using CS1L.Server.Data;
 using CS1L.Shared.Models.DTOs;
+using CS1L.Shared.Models.Sessions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,14 +22,14 @@ public class SessionController : ApiController
         _hostSessionService = hostSessionService;
     }
 
-    [HttpPost("[action]")]
-    public async Task<ActionResult> Create(long userId, int testId)
+    [HttpPost("create-lobby")]
+    public async Task<ActionResult> Create(CreateLobbyDTO dto)
     {
-        var session = await _hostSessionService.CreateHostSessionAsync(userId, testId);
+        var session = await _hostSessionService.CreateHostSessionAsync(dto.UserId, dto.TestId);
         return Ok(session);
     }
 
-    [HttpPost("connect/{hostSessionId}")]
+    [HttpPost("connect")]
     public ActionResult<PlayerSession> Connect(GameConnectDto dto)
     {
         var session = _hostSessionService.Connect(dto);
@@ -56,18 +56,18 @@ public class SessionController : ApiController
         return Ok(result);
     }
 
-    [HttpGet("host/{hostSessionId}")]
-    public ActionResult<HostSession> GetHostSession(Guid hostSessionId)
+    [HttpGet("host")]
+    public ActionResult<HostSession> GetHostSession([FromQuery] Guid hostSessionId)
     {
         var session = _hostSessionService.GetHostSession(hostSessionId);
         if (session is null) return NotFound();
         return Ok(session);
     }
 
-    [HttpGet("player/{id}")]
+    [HttpGet("player")]
     public ActionResult<PlayerSession> GetPlayerSession([FromQuery] Guid hostSessionId, [FromQuery] Guid playerSessionId)
     {
-        var playerSession = _hostSessionService.GetPlayer(hostSessionId, playerSessionId);
+        var playerSession = _hostSessionService.GetPlayerSession(hostSessionId, playerSessionId);
         if (playerSession is null) return NotFound();
         return Ok(playerSession);
     }

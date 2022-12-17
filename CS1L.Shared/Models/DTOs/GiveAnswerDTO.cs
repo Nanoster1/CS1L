@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace CS1L.Core.Sessions.Interfaces;
+namespace CS1L.Shared.Models.DTOs;
 
-public interface ISessionIdentity
-{
-    Guid Id { get; }
-    long VkId { get; }
-}
+public record GiveAnswerDTO(
+    Guid HostId,
+    Guid PlayerId,
+    int QuestionId,
+    int AnswerId);

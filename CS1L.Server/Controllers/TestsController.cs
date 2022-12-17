@@ -4,7 +4,7 @@
 
 using CS1L.Server.Controllers.Common;
 using CS1L.Server.Data;
-using CS1L.Shared.Models;
+using CS1L.Shared.Models.Tests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

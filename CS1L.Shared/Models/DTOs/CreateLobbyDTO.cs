@@ -1,7 +1,5 @@
 ﻿namespace CS1L.Shared.Models.DTOs;
 
-public class CreateLobbyDTO
-{
-    private long UserId { get; set; }
-    private int TestId { get; set; }
-}
+public record CreateLobbyDTO(
+    long UserId,
+    int TestId);
