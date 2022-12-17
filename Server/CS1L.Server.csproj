@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
@@ -22,7 +22,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Client\CS1L.Client.csproj" />
 		<ProjectReference Include="..\Shared\CS1L.Shared.csproj" />
-		<ProjectReference Include="..\Core\Core.csproj" />
+		<ProjectReference Include="..\Core\CS1L.Core.csproj" />
 	</ItemGroup>
 
 

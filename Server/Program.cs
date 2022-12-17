@@ -1,48 +1,54 @@
-﻿using CS1L.Server.Data;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using CS1L.Server.Data;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Shared.Routes.Server;
 
 var builder = WebApplication.CreateBuilder(args);
+
+StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
+
+builder.Services.AddCors();
+
+builder.Services.AddControllers();
+
+builder.Host.UseSerilog((ctx, logger) =>
 {
-    StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
+    logger.ReadFrom.Configuration(ctx.Configuration);
+});
 
-    builder.Services.AddCore();
+builder.Services.AddControllers();
+builder.Services.AddDbContextFactory<TestsContext>(options =>
+{
+    options.UseNpgsql(TestsContext.ConnectionString)
+    .UseSnakeCaseNamingConvention();
+});
 
-    builder.Services.AddControllers();
-
-    builder.Host.UseSerilog((ctx, logger) =>
+var app = builder.Build();
+{
+    if (app.Environment.IsDevelopment())
     {
-        logger.ReadFrom.Configuration(ctx.Configuration);
-    });
-
-    builder.Services.AddControllers();
-    builder.Services.AddDbContextFactory<TestsContext>(options =>
+        app.UseWebAssemblyDebugging();
+    }
+    else
     {
-        options.UseNpgsql(TestsContext.ConnectionString);
-    });
-
-    var app = builder.Build();
-    {
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseWebAssemblyDebugging();
-        }
-        else
-        {
-            app.UseExceptionHandler(ServerRoutes.Controllers.Error.Prefix);
-        }
-
-        app.UseBlazorFrameworkFiles();
-        app.UseStaticFiles();
-
-        app.UseRouting();
-
-        app.MapControllers();
-        app.MapFallbackToFile(ServerRoutes.FallbackFileName);
+        app.UseExceptionHandler(ServerRoutes.Controllers.Error.Prefix);
     }
 
-    app.Services.GetService<IDbContextFactory<TestsContext>>().CreateDbContext().Tests.Count();
+    app.UseBlazorFrameworkFiles();
+    app.UseStaticFiles();
 
-    app.Run();
+    app.UseRouting();
+
+    app.MapControllers();
+    app.MapFallbackToFile(ServerRoutes.FallbackFileName);
+}
+
+app.Services.GetService<IDbContextFactory<TestsContext>>()!.CreateDbContext().Tests.Count();
+
+app.Run();
+
