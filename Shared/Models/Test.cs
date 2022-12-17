@@ -1,10 +1,10 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
+﻿
 namespace CS1L.Shared.Models;
 
-public record Test(
-    int Id,
-    string Name,
-    IList<Question> Questions);
+public class Test
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public IList<Question> Questions { get; set; }
+    
+}
