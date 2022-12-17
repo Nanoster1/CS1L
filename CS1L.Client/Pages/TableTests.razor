@@ -2,19 +2,23 @@
 @using CS1L.Shared.Models
 @using CS1L.Shared.Models.DTOs
 @inject HttpClient HttpClient;
+
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
+
 <MudContainer>
-    <MudStack>
+    <MudStack Style="display: flex">
         @foreach(var item in AllTests)
-        { // TODO пошаманить с размерами 
-            <MudContainer Style="display: flex">
-                <MudContainer Style="display: flex">
-                    <MudText Style="align-self: center;">@item.Name</MudText>
+        { 
+            <MudContainer Style="display: flex; flex-direction:row; align-items:center; justify-content:center; gap:7vw;">
+                <MudContainer Class="flex-grow-1 order-0">
+                    <MudText Style="font-size: x-large;">@item.Name</MudText>
                 </MudContainer>
-                <MudContainer Style="display: flex">
-                    <MudText Style="align-self: center;">@item.Questions.Count</MudText>
+                <MudContainer Class="order-2">
+                    <MudText Style="font-size: x-large;">@item.Questions.Count</MudText>
                 </MudContainer>
-    
-                <MudIconButton Style="height: 50px" Icon="@Icons.Filled.ArrowForwardIos" OnClick="() => { CreateLobby(item.Id); }"/>
+
+                <MudIconButton Style="height: 50px; width: 50px;" Class="order-3" Icon="@Icons.Material.Filled.ArrowForwardIos"
+                           Variant="Variant.Outlined" OnClick="() => { CreateLobby(item.Id); }"/>
             </MudContainer>
         }
     </MudStack>
@@ -22,6 +26,22 @@
 
 
 @code {
+
+    private bool _isDarkMode;
+
+    private MudTheme _theme = new();
+
+    private MudThemeProvider _mudThemeProvider;
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            StateHasChanged();
+        }
+    }
 
     List<Test> AllTests = new List<Test>();
     
@@ -31,7 +51,7 @@
         {
             new Test()
             {
-                Name = "name",
+                Name = "Название побольше для 11б",
                 Questions = new List<Question>()
                 {
                     new Question(),
