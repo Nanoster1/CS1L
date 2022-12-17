@@ -1,7 +1,28 @@
-﻿@page "/Create"
-
+﻿@page "/create"
 <h3>Create</h3>
 
+@*@for (int i = 0; i < Question; i++)
+{
+    <MudContainer>
+        <MudImage Src="images/mony.jpg" Alt="Mony the dog" Elevation="25" Class="rounded-lg"/>
+        <MudTextField  T="string" 
+                       Label="Manual focus" Variant="Variant.Filled" 
+                       Lines="3" Adornment="Adornment.End" 
+                       AdornmentIcon="@Icons.Filled.CenterFocusWeak" />
+        
+        <MudContainer>
+            <MudTextField @bind-Value="" Label="Standard" Variant="Variant.Text"></MudTextField>
+            <MudTextField @bind-Value="" Label="Standard" Variant="Variant.Text"></MudTextField>
+            <MudTextField @bind-Value="" Label="Standard" Variant="Variant.Text"></MudTextField>
+            <MudTextField @bind-Value="" Label="Standard" Variant="Variant.Text"></MudTextField>
+        </MudContainer>
+    </MudContainer>    
+}*@
+
+<MudIconButton Icon="@Icons.Filled.Add" aria-label="delete"></MudIconButton>
+
+
 @code {
-    
+   // List<> Question = new List<>();
+
 }

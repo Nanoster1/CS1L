@@ -1,11 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
 
 namespace CS1L.Shared.Models;
 
-public record Question(
-    int Id,
-    string Test,
-    IList<Answer> CorrectAnswers,
-    IList<Answer> IncorrectAnswers);
+public class Question
+{
+    public int Id { get; set; }
+    public int TestId { get; set; }
+    public string Text { get; set; } = string.Empty;
+    public string? ImageUrl { get; set; }
+    public IList<Answer> CorrectAnswers { get; set; } = new List<Answer>();
+    public IList<Answer> IncorrectAnswers { get; set; } = new List<Answer>();
+}
+
