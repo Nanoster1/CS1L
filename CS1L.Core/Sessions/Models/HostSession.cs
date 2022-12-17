@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using CS1L.Core.Sessions.Interfaces;
+using CS1L.Shared.Models;
 
 namespace CS1L.Core.Sessions.Models;
 
@@ -12,6 +13,8 @@ public class HostSession : ISessionIdentity
     public Guid Id { get; set; }
     public long VkId { get; set; }
     public int Version { get; set; } = 1;
+    public Test Test { get; init; }
+
     public PlayerSession? GetPlayer(Guid id) => _players.GetValueOrDefault(id);
     public PlayerSession CreatePlayer(long vkId, string nickname)
     {
