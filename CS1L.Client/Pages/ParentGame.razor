@@ -4,7 +4,7 @@
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 @*<MudImage Src="images/mony.jpg" Alt="Mony the dog" Elevation="25" Class="rounded-lg"/>*@
 <!--TODO Данил: номер вопроса-->
-<MudContainer Style="width: 80vw;">
+<MudContainer Style="width: 90vw;">
 <MudText Style="text-align: justify;" Typo="Typo.subtitle1">subtitle1. Lorem ipsum dolor sit amet, consectetur
     adipisicing elit. Quos blanditiis tenetur</MudText>
 
@@ -13,7 +13,7 @@
         Пока 4 варианта 
     -->
     @for (int i = 0; i < Chips.Length; i++)
-    {
+    { //Todo цвет правильной
         <MudChip Style="height: 10vh;" Color="@colors[i]" Text="@Chips[i].Text"></MudChip>
     }
     </MudContainer>

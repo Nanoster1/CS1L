@@ -1,18 +1,41 @@
 ﻿@page "/game"
-@using CS1L.Shared.Models.Tests
-
+@using CS1L.Shared.Models
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 <MudImage Src="images/mony.jpg" Alt="Mony the dog" Elevation="25" Class="rounded-lg"/>
-<MudText Typo="Typo.subtitle1">subtitle1. Lorem ipsum dolor sit amet, consectetur
+
+<MudContainer Style="width: 85vw;">
+<MudText Style="text-align: justify;" Typo="Typo.subtitle1">
+    subtitle1. Lorem ipsum dolor sit amet, consectetur
     adipisicing elit. Quos blanditiis tenetur</MudText>
 
-<MudChipSet @bind-SelectedChip="selected" Filter="true" Style="display: flex;">
+<MudChipSet @bind-SelectedChip="selected" Filter="true" 
+            Style="display: flex; flex-direction:column; width: 80vw; padding-bottom: 20px;">
     @for (int i = 0; i < Chips.Length; i++)
     {
-        <MudChip Style="width: 100%; height: 100%" Color="@Chips[i].Color" Text="@Chips[i].Text"></MudChip>
+        <MudChip Style="height: 10vh;" Color="@colors[i]" Text="@Chips[i].Text"></MudChip>
     }
 </MudChipSet >
+</MudContainer>
+
 
 @code{
+
+    private bool _isDarkMode;
+
+    private MudTheme _theme = new();
+
+    private MudThemeProvider _mudThemeProvider;
+
+    private Color[] colors = new Color[] { Color.Primary, Color.Secondary, Color.Tertiary, Color.Warning };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            StateHasChanged();
+        }
+    }
     public Question Question = new Question();
     MudChip selected;
     
