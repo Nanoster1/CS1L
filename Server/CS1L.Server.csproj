@@ -22,6 +22,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Client\CS1L.Client.csproj" />
 		<ProjectReference Include="..\Shared\CS1L.Shared.csproj" />
+		<ProjectReference Include="..\Core\Core.csproj" />
 	</ItemGroup>
 
 

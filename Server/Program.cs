@@ -1,48 +1,48 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-using CS1L.Server.Data;
+﻿using CS1L.Server.Data;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Shared.Routes.Server;
 
 var builder = WebApplication.CreateBuilder(args);
-
-StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
-
-builder.Host.UseSerilog((ctx, logger) =>
 {
-    logger.ReadFrom.Configuration(ctx.Configuration);
-});
+    StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
 
-builder.Services.AddControllers();
-builder.Services.AddDbContextFactory<TestsContext>(options =>
-{
-    options.UseNpgsql(TestsContext.ConnectionString)
-    .UseSnakeCaseNamingConvention();
-});
+    builder.Services.AddCore();
 
-var app = builder.Build();
+    builder.Services.AddControllers();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseWebAssemblyDebugging();
-}
-else
-{
-    app.UseExceptionHandler(ServerRoutes.Controllers.Error.Prefix);
-}
+    builder.Host.UseSerilog((ctx, logger) =>
+    {
+        logger.ReadFrom.Configuration(ctx.Configuration);
+    });
 
-app.UseBlazorFrameworkFiles();
-app.UseStaticFiles();
+    builder.Services.AddControllers();
+    builder.Services.AddDbContextFactory<TestsContext>(options =>
+    {
+        options.UseNpgsql(TestsContext.ConnectionString);
+    });
 
-app.UseRouting();
+    var app = builder.Build();
+    {
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseWebAssemblyDebugging();
+        }
+        else
+        {
+            app.UseExceptionHandler(ServerRoutes.Controllers.Error.Prefix);
+        }
 
-app.MapControllers();
-app.MapFallbackToFile(ServerRoutes.FallbackFileName);
+        app.UseBlazorFrameworkFiles();
+        app.UseStaticFiles();
 
-app.Services.GetService<IDbContextFactory<TestsContext>>().CreateDbContext().Tests.Count();
+        app.UseRouting();
 
-app.Run();
+        app.MapControllers();
+        app.MapFallbackToFile(ServerRoutes.FallbackFileName);
+    }
+
+    app.Services.GetService<IDbContextFactory<TestsContext>>().CreateDbContext().Tests.Count();
+
+    app.Run();
