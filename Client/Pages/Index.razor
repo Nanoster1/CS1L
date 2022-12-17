@@ -1,5 +1,6 @@
 ﻿@page "/"
-
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
+<MudSwitch @bind-Checked="@_isDarkMode" Color="Color.Primary" Class="ma-4" T="bool" Label="Light/Dark Mode" />
 <PageTitle>Index</PageTitle>
 
 
@@ -11,5 +12,7 @@
 </MudContainer>
 
 @code{
+    private bool _isDarkMode;
 
+    private MudTheme _theme = new();
 }
