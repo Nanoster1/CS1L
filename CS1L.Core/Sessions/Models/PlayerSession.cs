@@ -12,7 +12,7 @@ public class PlayerSession : ISessionIdentity
     public required Guid HostId { get; init; }
     public required ulong VkId { get; init; }
     public required string Nickname { get; init; }
-    public required int Score { get; set; }
+    public int Score { get; set; } = 0;
     public PlayerSessionStatus Status { get; set; }
     public int? AnswersCount { get; set; }
 }

@@ -13,11 +13,13 @@ public class HostSession : ISessionIdentity
     public ulong VkId { get; set; }
 
     public PlayerSession? GetPlayer(Guid id) => _players.GetValueOrDefault(id);
-    public PlayerSession CreatePlayer(ulong vkId)
+    public PlayerSession CreatePlayer(ulong vkId, string nickname)
     {
         PlayerSession player = new()
         {
             Id = Guid.NewGuid(),
+            HostId = this.Id,
+            Nickname = nickname,
             VkId = vkId,
         };
         _players[player.Id] = player;
