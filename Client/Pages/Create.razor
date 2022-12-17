@@ -1,28 +1,60 @@
 ﻿@page "/create"
-<h3>Create</h3>
+@using CS1L.Shared.Models
 
-@*@for (int i = 0; i < Question; i++)
+@foreach (Question question in Questions)
 {
     <MudContainer>
         <MudImage Src="images/mony.jpg" Alt="Mony the dog" Elevation="25" Class="rounded-lg"/>
-        <MudTextField  T="string" 
-                       Label="Manual focus" Variant="Variant.Filled" 
-                       Lines="3" Adornment="Adornment.End" 
-                       AdornmentIcon="@Icons.Filled.CenterFocusWeak" />
-        
-        <MudContainer>
-            <MudTextField @bind-Value="" Label="Standard" Variant="Variant.Text"></MudTextField>
-            <MudTextField @bind-Value="" Label="Standard" Variant="Variant.Text"></MudTextField>
-            <MudTextField @bind-Value="" Label="Standard" Variant="Variant.Text"></MudTextField>
-            <MudTextField @bind-Value="" Label="Standard" Variant="Variant.Text"></MudTextField>
-        </MudContainer>
+        <MudTextField T="string" bind-Value="question.Text"
+                      Label="Manual focus" Variant="Variant.Filled"
+                      Lines="3" Adornment="Adornment.End"
+                      AdornmentIcon="@Icons.Filled.CenterFocusWeak"/>
+
+        <MudStack>
+            @foreach(var answer in question.Answers)
+            {
+                <MudContainer>
+                    <MudCheckBox @bind-Checked="@(answer.IsCorrect)" Color="Color.Primary"></MudCheckBox>
+                    <MudTextField @bind-Value="@answer.Text" Label="Standard"
+                                  Variant="Variant.Text"></MudTextField>
+                </MudContainer>
+            }
+        </MudStack>
     </MudContainer>    
-}*@
+}
 
-<MudIconButton Icon="@Icons.Filled.Add" aria-label="delete"></MudIconButton>
+<MudIconButton Icon="@Icons.Filled.Add" OnClick="AddQuestion"></MudIconButton>
 
 
-@code {
-   // List<> Question = new List<>();
+@code 
+{
 
+    string nameTest = String.Empty;
+    
+    List<Question> Questions = new List<Question>();
+
+    
+    protected async Task OnInitializedAsync()
+    {
+      
+    }
+
+    private void AddQuestion()
+    {
+        Questions.Add(new Question());
+      
+        Questions[Questions.Count-1].Answers.Add(new Answer());
+        Questions[Questions.Count-1].Answers.Add(new Answer());
+        Questions[Questions.Count-1].Answers.Add(new Answer());
+        Questions[Questions.Count-1].Answers.Add(new Answer());
+        
+        StateHasChanged();
+    }
+
+    private async Task Save()
+    {
+        Test test = new Test();
+        test.Questions = Questions;
+        test.Name = nameTest;
+    }
 }
