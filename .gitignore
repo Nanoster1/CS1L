@@ -3,3 +3,4 @@
 **/.vscode/
 **/.idea/
 **/.vs
+/Server/Logs/log.txt
