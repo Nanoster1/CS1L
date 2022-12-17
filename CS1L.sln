@@ -1,4 +1,4 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -8,9 +8,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CS1L.Client", "Client\CS1L.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CS1L.Shared", "Shared\CS1L.Shared.csproj", "{3F680EA6-02A8-419E-A2A2-3F46E8900E17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CS1L.Migrations", "CS1L.Migrations\CS1L.Migrations.csproj", "{969F8BE2-F72C-400C-80BA-3556AA065B23}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CS1L.Core", "Core\Core.csproj", "{2C2DBCC0-F391-4166-BA00-E2FB670FCA3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{2C2DBCC0-F391-4166-BA00-E2FB670FCA3A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CS1L.Migrations", "Migrations\Migrations.csproj", "{E7C727AF-B267-4597-A7B0-2344AA8FE432}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +38,10 @@ Global
 		{969F8BE2-F72C-400C-80BA-3556AA065B23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{969F8BE2-F72C-400C-80BA-3556AA065B23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{969F8BE2-F72C-400C-80BA-3556AA065B23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7C727AF-B267-4597-A7B0-2344AA8FE432}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7C727AF-B267-4597-A7B0-2344AA8FE432}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7C727AF-B267-4597-A7B0-2344AA8FE432}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7C727AF-B267-4597-A7B0-2344AA8FE432}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

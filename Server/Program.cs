@@ -1,48 +1,42 @@
-﻿using CS1L.Server.Data;
+﻿using Core;
+using CS1L.Server.Data;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Server.Data;
+using Server.Logger;
 using Shared.Routes.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 {
     StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
 
+    builder.Host.AddLogger();
+
     builder.Services.AddCore();
+    builder.Services.AddData();
 
     builder.Services.AddControllers();
+}
 
-    builder.Host.UseSerilog((ctx, logger) =>
+var app = builder.Build();
+{
+    if (app.Environment.IsDevelopment())
     {
-        logger.ReadFrom.Configuration(ctx.Configuration);
-    });
-
-    builder.Services.AddControllers();
-    builder.Services.AddDbContextFactory<TestsContext>(options =>
+        app.UseWebAssemblyDebugging();
+    }
+    else
     {
-        options.UseNpgsql(TestsContext.ConnectionString);
-    });
-
-    var app = builder.Build();
-    {
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseWebAssemblyDebugging();
-        }
-        else
-        {
-            app.UseExceptionHandler(ServerRoutes.Controllers.Error.Prefix);
-        }
-
-        app.UseBlazorFrameworkFiles();
-        app.UseStaticFiles();
-
-        app.UseRouting();
-
-        app.MapControllers();
-        app.MapFallbackToFile(ServerRoutes.FallbackFileName);
+        app.UseExceptionHandler(ServerRoutes.Controllers.Error.Prefix);
     }
 
-    app.Services.GetService<IDbContextFactory<TestsContext>>().CreateDbContext().Tests.Count();
+    app.UseBlazorFrameworkFiles();
+    app.UseStaticFiles();
 
-    app.Run();
+    app.UseRouting();
+
+    app.MapControllers();
+    app.MapFallbackToFile(ServerRoutes.FallbackFileName);
+}
+
+app.Run();
