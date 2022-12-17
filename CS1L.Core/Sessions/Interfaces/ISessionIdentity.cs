@@ -6,6 +6,6 @@ namespace CS1L.Core.Sessions.Interfaces;
 
 public interface ISessionIdentity
 {
-    public Guid Id { get; set; }
-    public ulong VkId { get; set; }
+    Guid Id { get; }
+    ulong VkId { get; }
 }
