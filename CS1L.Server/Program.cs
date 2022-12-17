@@ -5,6 +5,7 @@ using Serilog;
 using CS1L.Server.Logger;
 using CS1L.Shared.Routes.Server;
 using CS1L.Server.Hubs;
+using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -15,6 +16,13 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
+    builder.Services.AddRazorPages();
+    builder.Services.AddSignalR();
+    builder.Services.AddResponseCompression(opts =>
+    {
+        opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+            new[] { "application/octet-stream" });
+    });
 
     builder.Host.UseSerilog((ctx, logger) =>
     {
