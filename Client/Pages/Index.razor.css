@@ -1,0 +1,7 @@
+﻿.body {
+    background-image: image(../index.png);
+}
+
+.container{
+    width: 40vw;
+}
