@@ -9,11 +9,7 @@
     <MudContainer>
             @*<MudImage Src="images/mony.jpg" Alt="Mony the dog" Elevation="25" Class="rounded-lg"/>*@
         <MudTextField T="string" @bind-Value="question.Text"
-                      Label="Текст вопроса" Variant="Variant.Filled"
-         <MudTextField T="string" @bind-Value="question.Text"
-                              Label="Текст вопроса" Variant="Variant.Filled"
-                              Lines="3" Adornment="Adornment.End"
-                              />
+                      Label="Текст вопроса" Variant="Variant.Filled"/>
         <MudStack>
             @foreach(var answer in question.Answers)
             {
