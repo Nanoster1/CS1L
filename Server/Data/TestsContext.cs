@@ -9,6 +9,8 @@ namespace CS1L.Server.Data;
 
 public class TestsContext : DbContext
 {
+    public const string ConnectionString =
+        "Password=slava_pussy;Host=un1ver5e.ddns.net;Port=7777;Database=postgres;";
     public DbSet<Test> Tests { get; set; } = null!;
 
     public TestsContext(DbContextOptions<TestsContext> options)
