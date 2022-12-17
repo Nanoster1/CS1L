@@ -25,6 +25,11 @@ public class SessionHub : Hub
         var session = _sessionService.Connect(dto);
         await Groups.AddToGroupAsync(Context.ConnectionId, session.Id.ToString());
         await Clients.Caller.SendAsync("Connected", session);
-        await Clients.OthersInGroup(session.Id.ToString()).SendAsync("ConnectedNewPlayer", session);
+        await Clients.OthersInGroup(session.HostId.ToString()).SendAsync("ConnectedNewPlayer", session);
+    }
+    
+    public async Task StartGame(Guid sessionId)
+    {
+
     }
 }

@@ -30,7 +30,6 @@ else
     [Parameter]
     public string SessionId { get; set; } = string.Empty;
     private bool _isDarkMode;
-    private MudTheme _theme = new();
     private GameConnectDto GameConnectDto { get; set; } 
     private MudThemeProvider _mudThemeProvider;
     private HubConnection hubConnection = null!;
@@ -44,6 +43,14 @@ else
             .WithUrl(NavigationManager.ToAbsoluteUri("/session"))
             .Build();
 
+        hubConnection.On<PlayerSession>("Connected", session =>
+        {
+            Console.WriteLine("Connected");
+            Session = session;
+            Console.WriteLine(Session);
+            StateHasChanged();
+        });
+       
         await hubConnection.StartAsync();
         
     }
@@ -59,7 +66,9 @@ else
 
     private async Task Connect()
     {
+        Console.WriteLine("Connect");
         await hubConnection.SendAsync("Connect",GameConnectDto);
+        
     }
     
 }

@@ -20,9 +20,16 @@
         </MudCardActions>
     </MudCard>
 }
-else
+else if(!IsStarted)
 {
     <MudText>@Session.Id</MudText>
+    <MudText>@Session.Players.Count</MudText>
+    <MudText>@Session.Test.Questions.Count</MudText>
+    <MudButton OnClick="Start"></MudButton>
+}
+else
+{
+    <MudText>Ебааааать</MudText>
 }
 
 
@@ -30,7 +37,7 @@ else
 
     [Parameter]
     public string TestId { get; set; } = string.Empty;
-    
+    private bool IsStarted { get; set; } 
     private bool _isDarkMode;
 
     private MudTheme _theme = new();
@@ -50,13 +57,19 @@ else
             Session = session;
         });
 
+        hubConnection.On<PlayerSession>("ConnectedNewPlayer", playerSession =>
+        {
+            Session?.Players?.TryAdd(playerSession.Id,playerSession);
+            //StateHasChanged();    
+        });
+
         await hubConnection.StartAsync();
         await hubConnection.SendAsync("Create",0,int.Parse(TestId));
     }
 
-    private async Task Start()
+    private void Start()
     {
-        
+        IsStarted = !IsStarted;
     }
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
