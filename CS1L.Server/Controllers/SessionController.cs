@@ -1,9 +1,8 @@
 using CS1L.Core.Sessions.Models;
 using CS1L.Core.Sessions.Services;
-using CS1L.Core.Sessions.Services;
 using CS1L.Server.Controllers.Common;
 using CS1L.Server.Data;
-using CS1L.Shared.Models;
+using CS1L.Shared.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,30 +11,24 @@ namespace CS1L.Server.Controllers;
 [Route("[controller]")]
 public class SessionController : ApiController
 {
-    private readonly HostSessionsService _hostSessionService;
-    private readonly IDbContextFactory<TestsContext> _dbContextFactory;
+    private readonly SessionService _hostSessionService;
 
-    public SessionController(HostSessionsService hostSessionService, IDbContextFactory<TestsContext> dbContextFactory)
+    public SessionController(SessionService hostSessionService)
     {
         _hostSessionService = hostSessionService;
-        _dbContextFactory = dbContextFactory;
     }
 
-    [HttpPost("create-lobby")]
-    public async Task<ActionResult> CreateLobbyAsync(long userId, int testId)
+    [HttpPost("[action]")]
+    public async Task<ActionResult> Create(long userId, int testId)
     {
-        using TestsContext ctx = await _dbContextFactory.CreateDbContextAsync();
-        Test? test = ctx.Tests.FirstOrDefault(t => t.Id == testId);
-        if (test is null) return NotFound(test);
-
-        var session = _hostSessionService.CreateSession(userId, test);
+        var session = await _hostSessionService.CreateHostSessionAsync(userId, testId);
         return Ok(session);
     }
 
-    [HttpGet("connect/{hostSessionId}")]
-    public ActionResult Connect(Guid hostSessionId)
+    [HttpPost("connect/{hostSessionId}")]
+    public ActionResult<PlayerSession> Connect(GameConnectDto dto)
     {
-        var session = _hostSessionService.GetSession(hostSessionId);
+        var session = _hostSessionService.Connect(dto);
         if (session is null) return NotFound();
         return Ok(session);
     }
@@ -43,26 +36,26 @@ public class SessionController : ApiController
     [HttpGet("host/check")]
     public ActionResult CheckHostSession([FromQuery] Guid hostSessionId, [FromQuery] int version)
     {
-        var result = _hostSessionService.Check(hostSessionId, version);
+        var result = _hostSessionService.CheckHostSession(hostSessionId, version);
         if (result is null) return NotFound();
         return Ok(result);
     }
 
     [HttpGet("player/check")]
-    public ActionResult<bool> CheckPlayerSession([FromQuery] Guid hostSessionId, [FromQuery] Guid player, [FromQuery] int version)
+    public ActionResult<bool> CheckPlayerSession(
+        [FromQuery] Guid hostSessionId,
+        [FromQuery] Guid playerSessionId,
+        [FromQuery] int version)
     {
-        var hostSession = _hostSessionService.GetSession(hostSessionId);
-        if (hostSession is null) return NotFound();
-        var playerSession = hostSession.GetPlayer(player);
-        if (playerSession is null) return NotFound();
-        var result = playerSession.Version == version;
+        var result = _hostSessionService.CheckPlayerSession(hostSessionId, playerSessionId, version);
+        if (result is null) return NotFound();
         return Ok(result);
     }
 
     [HttpGet("host/{hostSessionId}")]
     public ActionResult<HostSession> GetHostSession(Guid hostSessionId)
     {
-        var session = _hostSessionService.GetSession(hostSessionId);
+        var session = _hostSessionService.GetHostSession(hostSessionId);
         if (session is null) return NotFound();
         return Ok(session);
     }
@@ -70,9 +63,8 @@ public class SessionController : ApiController
     [HttpGet("player/{id}")]
     public ActionResult<PlayerSession> GetPlayerSession([FromQuery] Guid hostSessionId, [FromQuery] Guid playerSessionId)
     {
-        var hostSession = _hostSessionService.GetSession(hostSessionId);
-        if (hostSession is null) return NotFound();
-        var playerSession = hostSession.GetPlayer(playerSessionId);
+        var playerSession = _hostSessionService.GetPlayer(hostSessionId, playerSessionId);
+        if (playerSession is null) return NotFound();
         return Ok(playerSession);
     }
 }

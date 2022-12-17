@@ -7,6 +7,7 @@ namespace CS1L.Server.Controllers;
 [Route(ServerRoutes.Controllers.Error.Prefix)]
 public class ErrorController : ApiController
 {
+    [NonAction]
     public ActionResult Error()
     {
         return Problem();
