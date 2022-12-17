@@ -1,9 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-using System.Collections.Concurrent;
-using CS1L.Core.Tests.Interfaces;
+﻿using CS1L.Core.Tests.Interfaces;
 using CS1L.Shared.Models.DTOs;
 using CS1L.Shared.Models.Sessions;
 
@@ -18,6 +13,13 @@ public class SessionService
     {
         _testRepository = testRepository;
         _storage = storage;
+    }
+
+    public void StartGame(Guid sessionId)
+    {
+        var session = GetHostSession(sessionId);
+        if (session is null) throw new ArgumentException("Session not found", nameof(sessionId));
+        session.IsStarted = true;
     }
 
     public HostSession? GetHostSession(Guid id) => _storage.TryGetValue(id, out var session) ? session : null;
@@ -40,18 +42,6 @@ public class SessionService
         return session;
     }
 
-    public bool? CheckHostSession(Guid sessionId, int version)
-    {
-        var session = GetHostSession(sessionId);
-        return session?.Version == version;
-    }
-
-    public bool? CheckPlayerSession(Guid hostSessionId, Guid playerSessionId, int version)
-    {
-        var session = GetPlayerSession(hostSessionId, playerSessionId);
-        return session?.Version == version;
-    }
-
     public PlayerSession? GetPlayerSession(Guid hostId, Guid playerId)
     {
         var session = GetHostSession(hostId);
@@ -70,6 +60,7 @@ public class SessionService
         };
         var hostSession = GetHostSession(dto.HostId);
         if (hostSession is null) throw new ArgumentException("Host session not found", nameof(dto));
+        if (hostSession.IsStarted) throw new InvalidOperationException("Game already started");
         hostSession.Players.TryAdd(player.Id, player);
         return player;
     }

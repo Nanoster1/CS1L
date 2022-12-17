@@ -1,5 +1,6 @@
 using CS1L.Core.Sessions.Services;
 using CS1L.Shared.Models.DTOs;
+using CS1L.Shared.Models.Tests;
 using Microsoft.AspNetCore.SignalR;
 
 namespace CS1L.Server.Hubs;
@@ -27,9 +28,25 @@ public class SessionHub : Hub
         await Clients.Caller.SendAsync("Connected", session);
         await Clients.OthersInGroup(session.HostId.ToString()).SendAsync("ConnectedNewPlayer", session);
     }
-    
+
     public async Task StartGame(Guid sessionId)
     {
+        _sessionService.StartGame(sessionId);
+        await Clients.Group(sessionId.ToString()).SendAsync("GameStarted");
+    }
 
+    public async Task GetQuestion(Guid sessionId, Question question)
+    {
+        await Clients.Group(sessionId.ToString()).SendAsync("Question", question);
+    }
+
+    public async Task Answer(Guid sessionId, Guid playerSessionId, int answerId)
+    {
+        await Clients.Group(sessionId.ToString()).SendAsync("UserGotAnswer", playerSessionId, answerId);
+    }
+
+    public async Task Finish(Guid sessionId)
+    {
+        await Clients.Group(sessionId.ToString()).SendAsync("GameEnded");
     }
 }

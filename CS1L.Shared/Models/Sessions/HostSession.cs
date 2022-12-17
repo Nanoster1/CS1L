@@ -12,6 +12,6 @@ public class HostSession : SessionIdentity
     public ConcurrentDictionary<Guid, PlayerSession> Players = new();
     public override Guid Id { get; set; }
     public override long VkId { get; set; }
-    public override int Version { get; set; } = 1;
     public Test Test { get; init; } = null!;
+    public bool IsStarted { get; set; }
 }

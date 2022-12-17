@@ -8,5 +8,4 @@ public abstract class SessionIdentity
 {
     public abstract Guid Id { get; set; }
     public abstract long VkId { get; set; }
-    public abstract int Version { get; set; }
 }
