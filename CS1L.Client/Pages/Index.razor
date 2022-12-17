@@ -1,13 +1,25 @@
 ﻿@page "/"
+@inject NavigationManager NavigationManager 
+
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 <PageTitle>Index</PageTitle>
 
 <MudContainer Class="container d-flex flex-column gap-10" Style="width:30vw;">
-    <MudButton Variant="Variant.Outlined" Color="Color.Primary">Новая викторина</MudButton>
-    <MudButton Variant="Variant.Outlined" Color="Color.Primary">Присоединиться</MudButton>
+    <MudButton OnClick="GoCreateTest" Variant="Variant.Outlined" Color="Color.Primary">Новая викторина</MudButton>
+    <MudButton OnClick="ShowConnectMessage" Variant="Variant.Outlined" Color="Color.Primary">Присоединиться</MudButton>
     <MudButton Variant="Variant.Outlined" Color="Color.Primary">Мои викторины</MudButton>
     <MudButton Variant="Variant.Outlined" Color="Color.Primary">Все викторины</MudButton>
 </MudContainer>
+
+<MudMessageBox @ref="ConnectBox" Title="Warning" CancelText="Cancel">
+    <MessageContent>
+        <MudText>Введите ключ:</MudText>
+        <MudTextField @bind-Value="ConnectKey" ></MudTextField>
+    </MessageContent>
+    <YesButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" >Присоединиться</MudButton>
+    </YesButton>
+</MudMessageBox>
 
 @code{
     private bool _isDarkMode;
@@ -23,5 +35,20 @@
             _isDarkMode = await _mudThemeProvider.GetSystemPreference();
             StateHasChanged();
         }
+    }
+    MudMessageBox ConnectBox { get; set; }
+    public string ConnectKey = String.Empty;
+    
+    private async Task ShowConnectMessage()
+    {
+        bool? result = await ConnectBox.Show();
+        if(result == true)
+    //TODO отпарвить ключ
+        StateHasChanged();
+    }
+
+    private async Task GoCreateTest()
+    {
+        NavigationManager.NavigateTo("/create");
     }
 }

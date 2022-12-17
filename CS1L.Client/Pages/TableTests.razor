@@ -1,0 +1,37 @@
+﻿@page "/table"
+@using CS1L.Shared.Models
+@using CS1L.Shared.Models.DTOs
+@inject HttpClient HttpClient;
+
+<MudTable Items="@AllTests" Hover="true" Breakpoint="Breakpoint.Sm"  T="Test">
+    <HeaderContent>
+        <MudTh>Название</MudTh>
+        <MudTh>Кол-во вопросов</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="QuestionsCount">@context.Questions.Count</MudTd>
+        <MudTd DataLabel="Btn">
+            <MudIconButton Icon="@Icons.Filled.ArrowForwardIos" OnClick="() => {CreateLobby(context.Id);}">
+                
+            </MudIconButton>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code {
+
+    List<Test> AllTests = new List<Test>();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        AllTests = (await HttpClient.GetFromJsonAsync<List<Test>>("tests"))!;
+    }
+
+    async Task CreateLobby(int TestId)
+    { //TODO Добавить id юзера
+        CreateLobbyDTO userandTestId = new CreateLobbyDTO();
+       var responce = await HttpClient.PostAsJsonAsync("create-lobby",userandTestId);
+    }
+}

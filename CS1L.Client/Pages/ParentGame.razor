@@ -1,19 +1,43 @@
-﻿@page "/game"
+﻿@page "/hostgame"
 @using CS1L.Shared.Models
 
-<MudImage Src="images/mony.jpg" Alt="Mony the dog" Elevation="25" Class="rounded-lg"/>
-<MudText Typo="Typo.subtitle1">subtitle1. Lorem ipsum dolor sit amet, consectetur
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
+@*<MudImage Src="images/mony.jpg" Alt="Mony the dog" Elevation="25" Class="rounded-lg"/>*@
+<!--TODO Данил: номер вопроса-->
+<MudContainer Style="width: 80vw;">
+<MudText Style="text-align: justify;" Typo="Typo.subtitle1">subtitle1. Lorem ipsum dolor sit amet, consectetur
     adipisicing elit. Quos blanditiis tenetur</MudText>
 
-<MudContainer Style="display: flex;">
+    <MudContainer Style="display: flex; flex-direction:column; width: 80vw; padding-bottom: 20px;">
+    <!--TODO Надя: схемы отображения вопросов
+        Пока 4 варианта 
+    -->
     @for (int i = 0; i < Chips.Length; i++)
     {
-        <MudChip Style="width: 100%; height: 100%" Color="@Chips[i].Color" Text="@Chips[i].Text"></MudChip>
+        <MudChip Style="height: 10vh;" Color="@colors[i]" Text="@Chips[i].Text"></MudChip>
     }
+    </MudContainer>
 </MudContainer>
 
-<MudProgressLinear Color="Color.Warning" Value="@TimeValue"  Class="my-7" />
+<MudProgressLinear Color="Color.Error" Value="@TimeValue"  Class="my-7" />
 @code {
+
+    private bool _isDarkMode;
+
+    private MudTheme _theme = new();
+
+    private MudThemeProvider _mudThemeProvider;
+
+    private Color[] colors = new Color[]{ Color.Primary, Color.Secondary, Color.Tertiary, Color.Warning };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            StateHasChanged();
+        }
+    }
 
     public int TimeValue { get; set; }
     public Question Question = new Question();
