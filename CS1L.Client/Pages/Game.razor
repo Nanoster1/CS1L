@@ -1,0 +1,48 @@
+﻿@page "/game"
+
+<MudImage Src="images/mony.jpg" Alt="Mony the dog" Elevation="25" Class="rounded-lg"/>
+<MudText Typo="Typo.subtitle1">subtitle1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur</MudText>
+
+<MudChipSet Style="display: flex;" Filter="true" >
+    <MudChip  Style="width: 100%; height: 100%" Text="grey">Default</MudChip>
+    <MudChip  Style="width: 100%; height: 100%" Text="purple" >Primary</MudChip>
+    <MudChip Style="width: 100%; height: 100%" Text="pink">Secondary</MudChip>
+    <MudChip Style="width: 100%; height: 100%" Text="blue">Info</MudChip>
+</MudChipSet>
+
+<MudProgressLinear Color="Color.Warning" Value="@Value"  Class="my-7" />
+@code {
+
+    public int Value { get; set; }
+
+    public async void SimulateProgress()
+    {
+        Value = 5;
+
+        do
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            Value += 4;
+            StateHasChanged();
+            await Task.Delay(100);
+
+        } while (Value < 100);
+
+        SimulateProgress();
+    }
+
+    protected override void OnInitialized() => SimulateProgress();
+
+    private bool _disposed;
+
+    public void Dispose() => _disposed = true;
+    
+    void EndTime()
+    {
+        
+    }
+}
