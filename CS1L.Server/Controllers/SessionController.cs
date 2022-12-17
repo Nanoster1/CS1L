@@ -67,7 +67,7 @@ public class SessionController : ApiController
     [HttpGet("player")]
     public ActionResult<PlayerSession> GetPlayerSession([FromQuery] Guid hostSessionId, [FromQuery] Guid playerSessionId)
     {
-        var playerSession = _hostSessionService.GetPlayer(hostSessionId, playerSessionId);
+        var playerSession = _hostSessionService.GetPlayerSession(hostSessionId, playerSessionId);
         if (playerSession is null) return NotFound();
         return Ok(playerSession);
     }

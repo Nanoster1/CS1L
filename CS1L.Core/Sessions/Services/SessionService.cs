@@ -48,11 +48,11 @@ public class SessionService
 
     public bool? CheckPlayerSession(Guid hostSessionId, Guid playerSessionId, int version)
     {
-        var session = GetPlayer(hostSessionId, playerSessionId);
+        var session = GetPlayerSession(hostSessionId, playerSessionId);
         return session?.Version == version;
     }
 
-    public PlayerSession? GetPlayer(Guid hostId, Guid playerId)
+    public PlayerSession? GetPlayerSession(Guid hostId, Guid playerId)
     {
         var session = GetHostSession(hostId);
         if (session is null) throw new ArgumentException("Session not found", nameof(hostId));
