@@ -1,5 +1,5 @@
-using CS1L.Core.Tests.Interfaces;
-using CS1L.Shared.Models;
+﻿using CS1L.Core.Tests.Interfaces;
+using CS1L.Shared.Models.Tests;
 using Microsoft.EntityFrameworkCore;
 
 namespace CS1L.Server.Data.Repositories;

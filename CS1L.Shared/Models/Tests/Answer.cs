@@ -1,4 +1,4 @@
-﻿namespace CS1L.Shared.Models;
+﻿namespace CS1L.Shared.Models.Tests;
 
 public class Answer
 {

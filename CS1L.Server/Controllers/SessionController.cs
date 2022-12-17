@@ -29,7 +29,7 @@ public class SessionController : ApiController
         return Ok(session);
     }
 
-    [HttpPost("connect/{hostSessionId}")]
+    [HttpPost("connect")]
     public ActionResult<PlayerSession> Connect(GameConnectDto dto)
     {
         var session = _hostSessionService.Connect(dto);
@@ -56,15 +56,15 @@ public class SessionController : ApiController
         return Ok(result);
     }
 
-    [HttpGet("host/{hostSessionId}")]
-    public ActionResult<HostSession> GetHostSession(Guid hostSessionId)
+    [HttpGet("host")]
+    public ActionResult<HostSession> GetHostSession([FromQuery] Guid hostSessionId)
     {
         var session = _hostSessionService.GetHostSession(hostSessionId);
         if (session is null) return NotFound();
         return Ok(session);
     }
 
-    [HttpGet("player/{id}")]
+    [HttpGet("player")]
     public ActionResult<PlayerSession> GetPlayerSession([FromQuery] Guid hostSessionId, [FromQuery] Guid playerSessionId)
     {
         var playerSession = _hostSessionService.GetPlayer(hostSessionId, playerSessionId);

@@ -1,4 +1,4 @@
-using CS1L.Shared.Models;
+﻿using CS1L.Shared.Models.Tests;
 
 namespace CS1L.Core.Tests.Interfaces;
 
