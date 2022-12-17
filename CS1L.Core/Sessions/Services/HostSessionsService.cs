@@ -9,7 +9,7 @@ namespace CS1L.Core.Sessions.Services;
 public class HostSessionsService
 {
     private readonly Dictionary<Guid, HostSession> _storage = new();
-    public HostSession CreateSession(ulong vkId)
+    public HostSession CreateSession(long vkId)
     {
         HostSession session = new()
         {

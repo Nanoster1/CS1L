@@ -7,5 +7,5 @@ namespace CS1L.Core.Sessions.Interfaces;
 public interface ISessionIdentity
 {
     Guid Id { get; }
-    ulong VkId { get; }
+    long VkId { get; }
 }

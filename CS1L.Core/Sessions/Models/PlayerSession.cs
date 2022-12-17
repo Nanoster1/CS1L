@@ -9,7 +9,7 @@ namespace CS1L.Core.Sessions.Models;
 public class PlayerSession : ISessionIdentity
 {
     public required Guid Id { get; init; }
-    public required ulong VkId { get; init; }
+    public required long VkId { get; init; }
     public PlayerSessionStatus Status { get; set; }
     public int? AnswersCount { get; set; }
 }
