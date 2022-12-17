@@ -25,20 +25,20 @@ namespace CS1L.Migrations.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "questions",
+                name: "question",
                 columns: table => new
                 {
+                    testid = table.Column<int>(name: "test_id", type: "integer", nullable: false),
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    testid = table.Column<int>(name: "test_id", type: "integer", nullable: false),
                     text = table.Column<string>(type: "text", nullable: false),
                     imageurl = table.Column<string>(name: "image_url", type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_questions", x => x.id);
+                    table.PrimaryKey("pk_question", x => new { x.testid, x.id });
                     table.ForeignKey(
-                        name: "fk_questions_tests_test_id",
+                        name: "fk_question_tests_test_id",
                         column: x => x.testid,
                         principalTable: "tests",
                         principalColumn: "id",
@@ -46,9 +46,10 @@ namespace CS1L.Migrations.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "answers",
+                name: "answer",
                 columns: table => new
                 {
+                    questiontestid = table.Column<int>(name: "question_test_id", type: "integer", nullable: false),
                     questionid = table.Column<int>(name: "question_id", type: "integer", nullable: false),
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
@@ -57,29 +58,24 @@ namespace CS1L.Migrations.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_answers", x => new { x.questionid, x.id });
+                    table.PrimaryKey("pk_answer", x => new { x.questiontestid, x.questionid, x.id });
                     table.ForeignKey(
-                        name: "fk_answers_questions_question_id",
-                        column: x => x.questionid,
-                        principalTable: "questions",
-                        principalColumn: "id",
+                        name: "fk_answer_question_question_test_id_question_id",
+                        columns: x => new { x.questiontestid, x.questionid },
+                        principalTable: "question",
+                        principalColumns: new[] { "test_id", "id" },
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "ix_questions_test_id",
-                table: "questions",
-                column: "test_id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "answers");
+                name: "answer");
 
             migrationBuilder.DropTable(
-                name: "questions");
+                name: "question");
 
             migrationBuilder.DropTable(
                 name: "tests");

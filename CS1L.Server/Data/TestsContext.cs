@@ -7,11 +7,8 @@ public class TestsContext : DbContext
 {
     public const string ConnectionString = "Database";
     public DbSet<Test> Tests { get; set; } = null!;
-    public DbSet<Question> Questions { get; set; } = null!;
-    public DbSet<Answer> Answers { get; set; } = null!;
 
-    public TestsContext(DbContextOptions<TestsContext> options)
-            : base(options)
+    public TestsContext(DbContextOptions<TestsContext> options) : base(options)
     {
     }
 

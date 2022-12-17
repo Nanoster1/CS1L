@@ -1,4 +1,4 @@
-using CS1L.Shared.Models;
+﻿using CS1L.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,7 +8,9 @@ public class TestConfiguration : IEntityTypeConfiguration<Test>
 {
     public void Configure(EntityTypeBuilder<Test> builder)
     {
-        builder.HasMany(t => t.Questions)
-            .WithOne();
+        builder.OwnsMany(t => t.Questions, qBuilder =>
+        {
+            qBuilder.OwnsMany(q => q.Answers);
+        });
     }
 }
