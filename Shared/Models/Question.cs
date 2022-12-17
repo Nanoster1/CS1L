@@ -1,5 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-
+﻿
 namespace CS1L.Shared.Models;
 
 public class Question
@@ -10,4 +9,4 @@ public class Question
     public string? ImageUrl { get; set; }
     public IList<Answer> Answers { get; set; } = new List<Answer>();
 }
-
+   
