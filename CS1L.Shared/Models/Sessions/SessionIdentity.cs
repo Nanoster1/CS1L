@@ -4,11 +4,11 @@
 
 namespace CS1L.Shared.Models.Sessions;
 
-public interface ISessionIdentity
+public abstract class SessionIdentity
 {
-    Guid Id { get; }
-    long VkId { get; }
-    int Version { get; set; }
+    public Guid Id { get; }
+    public long VkId { get; }
+    public int Version { get; set; }
 
-    void StateHasChanged() => Version++;
+    public void StateHasChanged() => Version++;
 }
