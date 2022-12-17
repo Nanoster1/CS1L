@@ -4,8 +4,13 @@
 @inject HttpClient HttpClient;
 
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
+<MudImage Src="images/name.png" Alt="VQuiz" Elevation="25" Class="rounded-lg"
+          Style="height:5vh; width:auto; top:5px; position: absolute;" />
 
 <MudContainer>
+    <MudIconButton Color="Color.Tertiary" Style="top:100px; position:absolute;" Variant="Variant.Outlined">
+                           <MudText>Назад</MudText>
+    </MudIconButton>
     <MudStack Style="display: flex">
         @foreach(var item in AllTests)
         { 

@@ -4,6 +4,9 @@
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 <PageTitle>Index</PageTitle>
 
+<MudImage Src="images/name.png" Alt="VQuiz" Elevation="25" Class="rounded-lg"
+          Style="height:5vh; width:auto; top:5px; position: absolute;" />
+
 <MudContainer Class="container d-flex flex-column gap-10" Style="width:60vw;">
     <MudButton OnClick="GoCreateTest" Variant="Variant.Outlined" Color="Color.Primary">Новая викторина</MudButton>
     <MudButton OnClick="ShowConnectMessage" Variant="Variant.Outlined" Color="Color.Primary">Присоединиться</MudButton>

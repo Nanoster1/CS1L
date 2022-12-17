@@ -3,8 +3,11 @@
 @using CS1L.Shared.Models.Tests
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 
-
+<MudImage Src="images/name.png" Alt="VQuiz" Elevation="25" Class="rounded-lg"
+          Style="height:5vh; width:auto; top:5px; position: absolute;" />
 <MudContainer Class="d-flex flex-column gap-12">
+
+
 @foreach (Question question in Questions)
 {
     <MudContainer>
@@ -26,6 +29,10 @@
 }
 
     <MudIconButton Class="add-button" Icon="@Icons.Material.Filled.Add" Variant="Variant.Outlined" OnClick="AddQuestion" Style="width: fit-content; margin: auto;"></MudIconButton>
+    <MudContainer class="d-flex flex-row justify-space-between gap-1">
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Выйти без сохранения</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary">Сохранить</MudButton>
+    </MudContainer>
 </MudContainer>
 
 @code 

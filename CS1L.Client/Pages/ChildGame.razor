@@ -1,7 +1,9 @@
 ﻿@page "/game"
 @using CS1L.Shared.Models.Tests
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
-<MudImage Src="images/mony.jpg" Alt="Mony the dog" Elevation="25" Class="rounded-lg"/>
+
+<MudImage Src="images/name.png" Alt="VQuiz" Elevation="25" Class="rounded-lg"
+          Style="height:5vh; width:auto; top:5px; position: absolute;"/>
 
 <MudContainer Style="width: 85vw;">
 <MudText Style="text-align: justify;" Typo="Typo.subtitle1">
@@ -96,7 +98,5 @@
         }
         StateHasChanged();
     }
-
-  
 
 }
