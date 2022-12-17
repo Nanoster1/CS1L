@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting.StaticWebAssets;
+using Shared.Routes.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,7 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Error");
+    app.UseExceptionHandler(ServerRoutes.Controllers.Error.Prefix);
 }
 
 app.UseBlazorFrameworkFiles();
@@ -23,6 +24,6 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.MapControllers();
-app.MapFallbackToFile("index.html");
+app.MapFallbackToFile(ServerRoutes.FallbackFileName);
 
 app.Run();
