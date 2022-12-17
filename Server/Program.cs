@@ -5,11 +5,17 @@
 using CS1L.Server.Data;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using Shared.Routes.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 
 StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
+
+builder.Host.UseSerilog((ctx, logger) =>
+{
+    logger.ReadFrom.Configuration(ctx.Configuration);
+});
 
 builder.Services.AddControllers();
 builder.Services.AddDbContextFactory<TestsContext>(options =>
@@ -35,5 +41,7 @@ app.UseRouting();
 
 app.MapControllers();
 app.MapFallbackToFile(ServerRoutes.FallbackFileName);
+
+app.Services.GetService<IDbContextFactory<TestsContext>>().CreateDbContext().Tests.Count();
 
 app.Run();

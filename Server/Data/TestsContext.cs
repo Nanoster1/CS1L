@@ -10,7 +10,7 @@ namespace CS1L.Server.Data;
 public class TestsContext : DbContext
 {
     public const string ConnectionString =
-        "Password=slava_pussy;Host=un1ver5e.ddns.net;Port=7777;Database=postgres;";
+        "Password=slava_pussy;Host=un1ver5e.ddns.net;Port=7777;Database=postgres;User ID=postgres;";
     public DbSet<Test> Tests { get; set; } = null!;
 
     public TestsContext(DbContextOptions<TestsContext> options)
@@ -19,5 +19,16 @@ public class TestsContext : DbContext
         Database.EnsureCreated();
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Test>()
+            .HasMany<Question>()
+            .WithOne();
+
+        modelBuilder.Entity<Question>()
+            .HasMany<Answer>()
+            .WithOne();
+
+    }
 
 }
