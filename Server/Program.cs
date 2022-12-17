@@ -20,7 +20,8 @@ builder.Host.UseSerilog((ctx, logger) =>
 builder.Services.AddControllers();
 builder.Services.AddDbContextFactory<TestsContext>(options =>
 {
-    options.UseNpgsql(TestsContext.ConnectionString);
+    options.UseNpgsql(TestsContext.ConnectionString)
+    .UseSnakeCaseNamingConvention();
 });
 
 var app = builder.Build();
