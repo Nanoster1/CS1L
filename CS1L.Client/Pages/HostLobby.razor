@@ -20,12 +20,31 @@
         </MudCardActions>
     </MudCard>
 }
-else if(!IsStarted)
+else if(IsStarted)
 {
-    <MudText>@Session.Id</MudText>
-    <MudText>@Session.Players.Count</MudText>
-    <MudText>@Session.Test.Questions.Count</MudText>
-    <MudButton OnClick="Start"></MudButton>
+    <MudCard Outlined="true" Class="d-flex justify-space-around">
+        <MudCardContent>
+            <MudText>Список игроков:</MudText>
+            <MudStack>
+                @if (true)
+                {
+                    int count = 0;
+                    foreach (var item in Session.Players)
+                    {
+                        <MudContainer>
+                            <MudText >@count) @item.Value.Nickname</MudText>
+                        </MudContainer>
+                        count++;
+                    }
+                }
+                
+            </MudStack>
+            <MudText>Ключ для подключения: @Session.Id</MudText>
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton OnClick="Start">Начать</MudButton>
+        </MudCardActions>
+    </MudCard>
 }
 else
 {
@@ -39,7 +58,7 @@ else
     public string TestId { get; set; } = string.Empty;
     private bool IsStarted { get; set; } 
     private bool _isDarkMode;
-
+    
     private MudTheme _theme = new();
 
     private MudThemeProvider _mudThemeProvider;
@@ -60,7 +79,7 @@ else
         hubConnection.On<PlayerSession>("ConnectedNewPlayer", playerSession =>
         {
             Session?.Players?.TryAdd(playerSession.Id,playerSession);
-            //StateHasChanged();    
+            StateHasChanged();
         });
 
         await hubConnection.StartAsync();
