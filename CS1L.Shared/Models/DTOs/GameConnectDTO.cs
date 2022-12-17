@@ -4,7 +4,10 @@
 
 namespace CS1L.Shared.Models.DTOs;
 
-public record GameConnectDto(
-    Guid HostId,
-    long VkId,
-    string NickName);
+public class GameConnectDto
+{
+    public Guid HostId { get; set; }
+    public long VkId { get; set; }
+    public string NickName { get; set; }
+}
+

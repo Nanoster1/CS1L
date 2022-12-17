@@ -2,6 +2,7 @@
 @using CS1L.Shared.Models.Tests
 @using CS1L.Shared.Models.DTOs
 @inject HttpClient HttpClient;
+@inject NavigationManager NavigationManager
 
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 <MudImage Src="images/name.png" Alt="VQuiz" Elevation="25" Class="rounded-lg"
@@ -69,7 +70,6 @@
 
     async Task CreateLobby(int TestId)
     { //TODO Добавить id юзера
-        CreateLobbyDTO userandTestId = new CreateLobbyDTO(0, TestId);
-       var responce = await HttpClient.PostAsJsonAsync("create-lobby",userandTestId);
+        NavigationManager.NavigateTo($"/{TestId}/lobby/host");
     }
 }

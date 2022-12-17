@@ -1,0 +1,65 @@
+﻿@page "/{SessionId}/lobby/user"
+@using Microsoft.AspNetCore.SignalR.Client
+@using CS1L.Shared.Models.Sessions
+@using CS1L.Shared.Models.DTOs
+@inject NavigationManager NavigationManager
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
+
+
+
+<MudImage Src="images/name.png" Alt="VQuiz" Elevation="0" Class="rounded-lg"
+          Style="height:5vh; width:auto; top:5px; position: absolute;"/>
+
+@if (Session is null)
+{
+    <MudCard Outlined="true" Class="d-flex justify-space-around">
+        <MudCardContent>
+            <MudText>Введите имя:</MudText>
+            <MudTextField @bind-Value="GameConnectDto.NickName"></MudTextField>
+            <MudButton OnClick="Connect">Подключиться</MudButton>
+        </MudCardContent>
+    </MudCard>
+}
+else
+{
+    <MudText>@Session.Id</MudText>
+}
+
+@code {
+
+    [Parameter]
+    public string SessionId { get; set; } = string.Empty;
+    private bool _isDarkMode;
+    private MudTheme _theme = new();
+    private GameConnectDto GameConnectDto { get; set; } 
+    private MudThemeProvider _mudThemeProvider;
+    private HubConnection hubConnection = null!;
+    private PlayerSession? Session { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        GameConnectDto = new GameConnectDto() {VkId = 1,HostId = Guid.Parse(SessionId)};
+        
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/session"))
+            .Build();
+
+        await hubConnection.StartAsync();
+        
+    }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            StateHasChanged();
+        }
+    }
+
+    private async Task Connect()
+    {
+        await hubConnection.SendAsync("Connect",GameConnectDto);
+    }
+    
+}

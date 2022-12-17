@@ -1,0 +1,71 @@
+﻿@page "/{TestId}/lobby/host"
+@using Microsoft.AspNetCore.SignalR.Client
+@using CS1L.Shared.Models.Sessions
+@inject NavigationManager NavigationManager
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
+
+
+
+<MudImage Src="images/name.png" Alt="VQuiz" Elevation="25" Class="rounded-lg"
+          Style="height:5vh; width:auto; top:5px; position: absolute;" />
+
+@if (Session is null)
+{
+    <MudCard Outlined="true" Class="d-flex justify-space-around">
+        <MudCardContent>
+            <MudText>Создание лобби</MudText>
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton OnClick="Start">Создать</MudButton>
+        </MudCardActions>
+    </MudCard>
+}
+else
+{
+    <MudText>@Session.Id</MudText>
+}
+
+
+@code {
+
+    [Parameter]
+    public string TestId { get; set; } = string.Empty;
+    
+    private bool _isDarkMode;
+
+    private MudTheme _theme = new();
+
+    private MudThemeProvider _mudThemeProvider;
+    private HubConnection hubConnection = null!;
+    private HostSession? Session { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/session"))
+            .Build();
+
+        hubConnection.On<HostSession>("Created", session =>
+        {
+            Session = session;
+        });
+
+        await hubConnection.StartAsync();
+        await hubConnection.SendAsync("Create",0,int.Parse(TestId));
+    }
+
+    private async Task Start()
+    {
+        
+    }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            StateHasChanged();
+        }
+    }
+    
+}

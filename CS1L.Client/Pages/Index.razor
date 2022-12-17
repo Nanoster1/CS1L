@@ -4,7 +4,7 @@
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 <PageTitle>Index</PageTitle>
 
-<MudImage Src="images/name.png" Alt="VQuiz" Elevation="25" Class="rounded-lg"
+<MudImage Src="images/name.png" Alt="VQuiz" Elevation="0" Class="rounded-lg"
           Style="height:5vh; width:auto; top:5px; position: absolute;" />
 
 <MudContainer Class="container d-flex flex-column gap-10" Style="width:60vw;">
@@ -56,8 +56,10 @@
     private async Task ShowConnectMessage()
     {
         bool? result = await ConnectBox.Show();
-        if(result == true)
-    //TODO отпарвить ключ
+        if(result == true && !string.IsNullOrWhiteSpace(ConnectKey))
+        {
+            NavigationManager.NavigateTo($"{ConnectKey}/lobby/user");
+        }
         StateHasChanged();
     }
     
@@ -67,7 +69,6 @@
         Console.WriteLine(result == true && string.IsNullOrWhiteSpace(NameTest));
         if (result == true && !string.IsNullOrWhiteSpace(NameTest))
         {
-            Console.WriteLine(NameTest);
             NavigationManager.NavigateTo($"/create/{NameTest}");
         }
         StateHasChanged();
