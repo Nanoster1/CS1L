@@ -8,7 +8,7 @@
           Style="height:5vh; width:auto; top:5px; position: absolute;" />
 
 <MudContainer Class="container d-flex flex-column gap-10" Style="width:60vw;">
-    <MudButton OnClick="GoCreateTest" Variant="Variant.Outlined" Color="Color.Primary">Новая викторина</MudButton>
+    <MudButton OnClick="ShowCreateTestMessage" Variant="Variant.Outlined" Color="Color.Primary">Новая викторина</MudButton>
     <MudButton OnClick="ShowConnectMessage" Variant="Variant.Outlined" Color="Color.Primary">Присоединиться</MudButton>
     <MudButton Variant="Variant.Outlined" Color="Color.Primary">Мои викторины</MudButton>
     <MudButton OnClick="GoTableTests" Variant="Variant.Outlined" Color="Color.Primary">Все викторины</MudButton>
@@ -24,12 +24,24 @@
     </YesButton>
 </MudMessageBox>
 
+<MudMessageBox @ref="NameTestBox" Title="Warning" CancelText="Cancel">
+    <MessageContent>
+        <MudText>Введите название теста:</MudText>
+        <MudTextField @bind-Value="NameTest" ></MudTextField>
+    </MessageContent>
+    <YesButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" >Продолжить</MudButton>
+    </YesButton>
+</MudMessageBox>
+
 @code{
     private bool _isDarkMode;
-
-    private MudTheme _theme = new();
-
+    public string NameTest = String.Empty;
+    public string ConnectKey = String.Empty;
     private MudThemeProvider _mudThemeProvider;
+    MudMessageBox ConnectBox { get; set; }
+    MudMessageBox NameTestBox { get; set; }
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -39,8 +51,7 @@
             StateHasChanged();
         }
     }
-    MudMessageBox ConnectBox { get; set; }
-    public string ConnectKey = String.Empty;
+   
     
     private async Task ShowConnectMessage()
     {
@@ -50,10 +61,19 @@
         StateHasChanged();
     }
     
-    private async Task GoCreateTest()
+    private async Task ShowCreateTestMessage()
     {
-        NavigationManager.NavigateTo("/create");
+        bool? result = await NameTestBox.Show();
+        Console.WriteLine(result == true && string.IsNullOrWhiteSpace(NameTest));
+        if (result == true && !string.IsNullOrWhiteSpace(NameTest))
+        {
+            Console.WriteLine(NameTest);
+            NavigationManager.NavigateTo($"/create/{NameTest}");
+        }
+        StateHasChanged();
     }
+    
+    
     
     private async Task GoTableTests()
     {

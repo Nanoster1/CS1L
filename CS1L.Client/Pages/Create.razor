@@ -1,4 +1,4 @@
-﻿@page "/create"
+﻿@page "/create/{NameTest}"
 @using CS1L.Shared.Models.Tests
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager 
@@ -38,6 +38,9 @@
 
 @code 
 {
+    [Parameter]
+    public string NameTest { get; set; } = string.Empty;
+    
     private bool _isDarkMode;
 
     private MudTheme _theme = new();
@@ -53,7 +56,6 @@
         }
     }
 
-    string nameTest = String.Empty;
     
     List<Question> Questions = new List<Question>();
 
@@ -79,7 +81,7 @@
     {
         Test test = new Test();
         test.Questions = Questions;
-        test.Name = nameTest;
+        test.Name = NameTest;
         
         var responce = await HttpClient.PostAsJsonAsync("tests",test);
         NavigationManager.NavigateTo("/");

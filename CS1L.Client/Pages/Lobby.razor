@@ -1,10 +1,7 @@
 ﻿@page "/{TestId}/lobby"
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 
-@*<MudPaper>
-    <MudText>Ожидайте начала викторины</MudText>
-    <MudText>Вы подключились к "Название"</MudText>
-</MudPaper>*@
+
 
 <MudImage Src="images/name.png" Alt="VQuiz" Elevation="25" Class="rounded-lg"
           Style="height:5vh; width:auto; top:5px; position: absolute;" />
@@ -14,12 +11,6 @@
         <MudText>Ожидайте начала викторины</MudText>
         <MudText Typo="Typo.body2">Вы подключились к "Название"</MudText>
     </MudCardContent>
-    <MudCardActions>
-        <MudButton Disabled="true" Variant="Variant.Filled" Color="Color.Primary">
-            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-            <MudText Class="ms-2">Processing</MudText>
-        </MudButton>
-    </MudCardActions>
 </MudCard>
 
 @code {
