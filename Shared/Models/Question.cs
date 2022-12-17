@@ -7,5 +7,6 @@ namespace CS1L.Shared.Models;
 public record Question(
     int Id,
     string Test,
+    string urlImage,
     IList<Answer> CorrectAnswers,
     IList<Answer> IncorrectAnswers);
