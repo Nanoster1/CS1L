@@ -1,0 +1,26 @@
+﻿@page "/{TestId}/point/{NumberPointsTeams}"
+@using CS1L.Shared.Models.Sessions
+
+@foreach (var item in HostSession.Players)
+{
+    <MudTimeline >
+        <MudTimelineItem Color="Color.Dark" Elevation="25">
+            <ItemOpposite>
+                <MudText Color="Color.Dark" Typo="Typo.h6">@item.Value.Nickname</MudText>
+            </ItemOpposite>
+            <ItemContent>
+                <MudPaper Elevation="0" Class="mt-n1">
+                    <MudText Color="Color.Dark" Typo="Typo.h6" GutterBottom="true">@item.Value.Score</MudText>
+                </MudPaper>
+            </ItemContent>
+        </MudTimelineItem>
+    </MudTimeline>    
+}
+
+
+
+@code {
+    HostSession HostSession = new HostSession();
+    
+    
+}
