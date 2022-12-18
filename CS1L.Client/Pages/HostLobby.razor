@@ -3,6 +3,7 @@
 @using CS1L.Shared.Models.Sessions
 @using CS1L.Shared.Models.Tests
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JS
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 
 
@@ -43,6 +44,7 @@ else if(!IsStarted)
                 
             </MudStack>
             <MudText>Ключ для подключения: @Session.Id</MudText>
+            <div id="qrcode"></div>
         </MudCardContent>
         <MudCardActions>
             <MudButton OnClick="Start">Начать</MudButton>
@@ -160,10 +162,11 @@ else
             .WithUrl(NavigationManager.ToAbsoluteUri("/session"))
             .Build();
 
-        hubConnection.On<HostSession>("Created", session =>
+        hubConnection.On<HostSession>("Created", async session =>
         {
             Session = session;
             StateHasChanged();
+            await MakeCode(Session.Id.ToString());
         });
 
         hubConnection.On<PlayerSession>("ConnectedNewPlayer", playerSession =>
@@ -217,4 +220,8 @@ else
         }
     }
     
+    public async Task MakeCode(string text)
+    {
+        await JS.InvokeVoidAsync("makeCode", text, "qrcode");
+    }
 }
