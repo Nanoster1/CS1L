@@ -13,12 +13,14 @@
 
 @if (Session is null)
 {
-    <MudCard Outlined="true" Class="d-flex justify-space-around">
+    <MudCard Outlined="true" Style="display: flex; flex-direction:column;">
         <MudCardContent>
             <MudText>Введите имя:</MudText>
             <MudTextField @bind-Value="GameConnectDto.NickName"></MudTextField>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Connect">Подключиться</MudButton>
         </MudCardContent>
+        <MudCardActions Style="justify-content: space-around;">
+              <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Connect">Подключиться</MudButton>
+        </MudCardActions>
     </MudCard>
 }
 else if(!IsStarted)

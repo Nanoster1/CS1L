@@ -26,15 +26,16 @@
 <MudMessageBox @ref="NameTestBox" Title="Создать Тест" CancelText="Отмена">
     <MessageContent>
         <MudText>Введите название теста:</MudText>
-        <MudTextField @bind-Value="NameTest" ></MudTextField>
+        <MudTextField  Counter="5" Validation="@(new Func<string, IEnumerable<string>>(MinCharacters))" @bind-Value="NameTest" ></MudTextField>
     </MessageContent>
     <YesButton>
-        <MudButton Variant="Variant.Text" Color="Color.Error" >Продолжить</MudButton>
+        <MudButton Disabled="IsMinLenght" Variant="Variant.Text" Color="Color.Error" >Продолжить</MudButton>
     </YesButton>
 </MudMessageBox>
 
 @code{
     private bool _isDarkMode;
+    private bool IsMinLenght { get; set; } = true;
     public string NameTest = String.Empty;
     public string ConnectKey = String.Empty;
     private MudThemeProvider _mudThemeProvider;
@@ -73,7 +74,15 @@
         StateHasChanged();
     }
     
-    
+    private IEnumerable<string> MinCharacters(string ch)
+    {
+        if (!string.IsNullOrEmpty(ch) && 5 >= ch?.Length)
+        {
+            yield return "Минимум 5 символов";
+        }
+        IsMinLenght = false;
+
+    }
     
     private async Task GoTableTests()
     {

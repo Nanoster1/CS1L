@@ -17,4 +17,9 @@
 		<ProjectReference Include="..\CS1L.Shared\CS1L.Shared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Remove="Pages\ParentGame.razor" />
+	  <Content Remove="Pages\ChildGame.razor" />
+	</ItemGroup>
+
 </Project>
