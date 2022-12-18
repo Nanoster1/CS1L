@@ -172,7 +172,7 @@ else
         {
             Session = session;
             StateHasChanged();
-            await MakeCode(Session.Id.ToString());
+            await MakeCode(NavigationManager.ToAbsoluteUri($"/{Session.Id}/lobby/user").ToString());
         });
 
         hubConnection.On<PlayerSession>("ConnectedNewPlayer", playerSession =>
