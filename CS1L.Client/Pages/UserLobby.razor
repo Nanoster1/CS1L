@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.SignalR.Client
 @using CS1L.Shared.Models.Sessions
 @using CS1L.Shared.Models.DTOs
+@using CS1L.Shared.Models.Tests
 @inject NavigationManager NavigationManager
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 
@@ -20,9 +21,51 @@
         </MudCardContent>
     </MudCard>
 }
+else if(!IsStarted)
+{
+    <MudCard Outlined="true" Class="d-flex justify-space-around">
+        <MudCardContent>
+            <MudText>Ожидайте начала игры</MudText>
+        </MudCardContent>
+    </MudCard>
+}
+else if(IsGame)
+{
+    <MudContainer Style="width: 85vw;">
+        <MudText Style="text-align: justify;" Typo="Typo.subtitle1">
+            @SelectQuestion?.Text</MudText>
+
+        <MudChipSet @bind-SelectedChip="selected" Filter="true" 
+                    Style="display: flex; flex-direction:column; width: 80vw; padding-bottom: 20px;">
+            @for (int i = 0; i < SelectQuestion.Answers.Count; i++)
+            {
+                <MudChip Style="height: 10vh;" Color="@colors[i]" Value="@i" Text="@SelectQuestion?.Answers[i]?.Text"></MudChip>
+            }
+        </MudChipSet >
+    </MudContainer>
+
+}
+else if(!Final)
+{
+    <MudCard Outlined="true" Class="d-flex justify-space-around">
+        <MudCardContent>
+            <MudText>У вас @Session.Score поинтов</MudText>
+        </MudCardContent>
+    </MudCard>
+}
 else
 {
-    <MudText>@Session.Id</MudText>
+    
+    <MudCard Outlined="true" Class="d-flex justify-space-around">
+        <MudCardContent>
+            <MudContainer>
+                    <MudText>
+                        Спасибо за игру!
+                    </MudText>
+                </MudContainer>
+                <MudText>У вас @Session.Score поинтов</MudText>
+        </MudCardContent>
+    </MudCard>
 }
 
 @code {
@@ -30,10 +73,18 @@ else
     [Parameter]
     public string SessionId { get; set; } = string.Empty;
     private bool _isDarkMode;
+    private bool IsStarted { get; set; }
+    private bool IsGame { get; set; } = true;
+    private bool Final { get; set; } = false;
     private GameConnectDto GameConnectDto { get; set; } 
     private MudThemeProvider _mudThemeProvider;
     private HubConnection hubConnection = null!;
     private PlayerSession? Session { get; set; }
+    private Question? SelectQuestion { get; set; }
+    MudChip selected;
+    
+    private Color[] colors = new Color[]{ Color.Primary, Color.Secondary, Color.Tertiary, Color.Warning };
+
     
     protected override async Task OnInitializedAsync()
     {
@@ -45,12 +96,43 @@ else
 
         hubConnection.On<PlayerSession>("Connected", session =>
         {
-            Console.WriteLine("Connected");
             Session = session;
             Console.WriteLine(Session);
             StateHasChanged();
         });
+        
+        hubConnection.On("GameStarted",  () =>
+        {
+            IsStarted = true;
+            StateHasChanged();
+        });
+        
+        hubConnection.On<Question>("Question",  question =>
+        {
+            IsGame = true;
+            SelectQuestion = question;
+            StateHasChanged();
+        });
        
+        hubConnection.On("GameEnded", 
+             async () =>  {
+                      
+                      if (SelectQuestion!.Answers[(int)selected.Value].IsCorrect)
+                      {
+                          Session!.Score += 1;
+                      }
+                        IsGame = false;
+                        await hubConnection.SendAsync("Answer",Session.HostId,Session!.Id,Session.Score); // TODO ЧТО ЕЩЁ ЗА IDANSWER?
+                        StateHasChanged();
+        }); 
+        
+         hubConnection.On("GameFullEnded", 
+             () =>  {
+                        IsGame = false;
+                        Final = true;
+                        StateHasChanged();
+            }); 
+        
         await hubConnection.StartAsync();
         
     }
@@ -66,7 +148,6 @@ else
 
     private async Task Connect()
     {
-        Console.WriteLine("Connect");
         await hubConnection.SendAsync("Connect",GameConnectDto);
         
     }
