@@ -62,7 +62,7 @@ else if(IsGame)
     
     <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 @*<MudImage Src="images/mony.jpg" Alt="Mony the dog" Elevation="25" Class="rounded-lg"/>*@
-    <!--TODO Данил: номер вопроса-->
+    
     <MudContainer Style="width: 90vw;">
         <MudText Style="text-align: justify;" Typo="Typo.subtitle1">@SelectQuestion.Text</MudText>
 
@@ -71,7 +71,7 @@ else if(IsGame)
             Пока 4 варианта 
             -->
             @for (int i = 0; i < Chips.Length; i++)
-            { //Todo цвет правильной
+            { 
                 <MudChip Style="height: 10vh;" Color="@colors[i]" Text="@SelectQuestion.Answers[i].Text"></MudChip>
             }
         </MudContainer>
