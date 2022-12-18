@@ -20,7 +20,7 @@
             <MudText>Создание лобби</MudText>
         </MudCardContent>
         <MudCardActions>
-            <MudButton OnClick="CreateLobby">Создать</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateLobby">Создать</MudButton>
         </MudCardActions>
     </MudCard>
 }
@@ -47,7 +47,7 @@ else if(!IsStarted)
             <div id="qrcode"></div>
         </MudCardContent>
         <MudCardActions>
-            <MudButton OnClick="Start">Начать</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Start">Начать</MudButton>
         </MudCardActions>
     </MudCard>
 }
@@ -61,9 +61,6 @@ else if(IsGame)
         <MudText Style="text-align: justify;" Typo="Typo.subtitle1">@SelectQuestion.Text</MudText>
 
         <MudContainer Style="display: flex; flex-direction:column; width: 80vw; padding-bottom: 20px;">
-            <!--TODO Надя: схемы отображения вопросов
-            Пока 4 варианта 
-            -->
             @for (int i = 0; i < Chips.Length; i++)
             { //Todo цвет правильной
                 <MudChip Style="height: 10vh;" Color="@colors[i]" Text="@SelectQuestion.Answers[i].Text"></MudChip>
@@ -95,7 +92,7 @@ else if(!IsFinal)
 else
 {
     <MudContainer>
-        <MudText>
+        <MudText Class="object-center" Style="font-size: xx-large;">
             Спасибо за игру!
         </MudText>
     </MudContainer>
@@ -125,7 +122,7 @@ else
     private bool _isDarkMode;
     private bool IsFinal { get; set; } = false;
     MudChip[] Chips = new MudChip[4];
-    private Color[] colors = new Color[]{ Color.Primary, Color.Secondary, Color.Tertiary, Color.Warning };
+    private Color[] colors = new Color[] { Color.Primary, Color.Secondary, Color.Tertiary, Color.Warning };
     public int TimeValue { get; set; }
     private Question? SelectQuestion { get; set; }
     private MudThemeProvider _mudThemeProvider;
