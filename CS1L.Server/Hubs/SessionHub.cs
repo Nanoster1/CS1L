@@ -24,7 +24,7 @@ public class SessionHub : Hub
     public async Task Connect(GameConnectDto dto)
     {
         var session = _sessionService.Connect(dto);
-        await Groups.AddToGroupAsync(Context.ConnectionId, session.Id.ToString());
+        await Groups.AddToGroupAsync(Context.ConnectionId, session.HostId.ToString());
         await Clients.Caller.SendAsync("Connected", session);
         await Clients.OthersInGroup(session.HostId.ToString()).SendAsync("ConnectedNewPlayer", session);
     }
@@ -37,16 +37,20 @@ public class SessionHub : Hub
 
     public async Task GetQuestion(Guid sessionId, Question question)
     {
-        await Clients.Group(sessionId.ToString()).SendAsync("Question", question);
+        await Clients.OthersInGroup(sessionId.ToString()).SendAsync("Question", question);
     }
 
-    public async Task Answer(Guid sessionId, Guid playerSessionId, int answerId)
+    public async Task Answer(Guid sessionId, Guid playerSessionId,int scores)
     {
-        await Clients.Group(sessionId.ToString()).SendAsync("UserGotAnswer", playerSessionId, answerId);
+        await Clients.Group(sessionId.ToString()).SendAsync("UserGotAnswer", playerSessionId,scores);
     }
 
     public async Task Finish(Guid sessionId)
     {
         await Clients.Group(sessionId.ToString()).SendAsync("GameEnded");
+    }
+    public async Task FullFinish(Guid sessionId)
+    {
+        await Clients.Group(sessionId.ToString()).SendAsync("GameFullEnded");
     }
 }

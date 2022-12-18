@@ -1,11 +1,16 @@
 ﻿@page "/{TestId}/lobby/host"
 @using Microsoft.AspNetCore.SignalR.Client
 @using CS1L.Shared.Models.Sessions
+@using CS1L.Shared.Models.Tests
 @inject NavigationManager NavigationManager
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 
-<MudImage Src="images/name.png" Alt="VQuiz" Elevation="25" Class="rounded-lg"
+
+
+<MudImage Src="images/name.png" Alt="VQuiz" Elevation="0" Class="rounded-lg"
           Style="height:5vh; width:auto; top:5px; position: absolute;" />
+
+
 
 @if (Session is null)
 {
@@ -14,11 +19,11 @@
             <MudText>Создание лобби</MudText>
         </MudCardContent>
         <MudCardActions>
-            <MudButton OnClick="Start">Создать</MudButton>
+            <MudButton OnClick="CreateLobby">Создать</MudButton>
         </MudCardActions>
     </MudCard>
 }
-else if(IsStarted)
+else if(!IsStarted)
 {
     <MudCard Outlined="true" Class="d-flex justify-space-around">
         <MudCardContent>
@@ -44,24 +49,110 @@ else if(IsStarted)
         </MudCardActions>
     </MudCard>
 }
+else if(IsGame)
+{
+    
+    <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
+@*<MudImage Src="images/mony.jpg" Alt="Mony the dog" Elevation="25" Class="rounded-lg"/>*@
+    <!--TODO Данил: номер вопроса-->
+    <MudContainer Style="width: 90vw;">
+        <MudText Style="text-align: justify;" Typo="Typo.subtitle1">@SelectQuestion.Text</MudText>
+
+        <MudContainer Style="display: flex; flex-direction:column; width: 80vw; padding-bottom: 20px;">
+            <!--TODO Надя: схемы отображения вопросов
+            Пока 4 варианта 
+            -->
+            @for (int i = 0; i < Chips.Length; i++)
+            { //Todo цвет правильной
+                <MudChip Style="height: 10vh;" Color="@colors[i]" Text="@SelectQuestion.Answers[i].Text"></MudChip>
+            }
+        </MudContainer>
+    </MudContainer>
+    
+    <MudProgressLinear Color="Color.Error" Value="@TimeValue"  Class="my-7" />
+}
+else if(!IsFinal)
+{
+    @foreach (var item in Session.Players)
+    {
+        <MudTimeline >
+            <MudTimelineItem Color="Color.Dark" Elevation="25">
+                <ItemOpposite>
+                    <MudText Color="Color.Dark" Typo="Typo.h6">@item.Value.Nickname</MudText>
+                </ItemOpposite>
+                <ItemContent>
+                    <MudPaper Elevation="0" Class="mt-n1">
+                        <MudText Color="Color.Dark" Typo="Typo.h6" GutterBottom="true">@item.Value.Score</MudText>
+                    </MudPaper>
+                </ItemContent>
+            </MudTimelineItem>
+        </MudTimeline>    
+    }
+    <MudProgressLinear Color="Color.Error" Value="@TimeValue"  Class="my-7" />
+}
 else
 {
-    <MudText>Ебааааать</MudText>
+    <MudContainer>
+        <MudText>
+            Спасибо за игру!
+        </MudText>
+    </MudContainer>
+    @foreach (var item in Session.Players)
+    {
+        <MudTimeline >
+            <MudTimelineItem Color="Color.Dark" Elevation="25">
+                <ItemOpposite>
+                    <MudText Color="Color.Dark" Typo="Typo.h6">@item.Value.Nickname</MudText>
+                </ItemOpposite>
+                <ItemContent>
+                    <MudPaper Elevation="0" Class="mt-n1">
+                        <MudText Color="Color.Dark" Typo="Typo.h6" GutterBottom="true">@item.Value.Score</MudText>
+                    </MudPaper>
+                </ItemContent>
+            </MudTimelineItem>
+        </MudTimeline>    
+    }
 }
-
 
 @code {
 
     [Parameter]
     public string TestId { get; set; } = string.Empty;
-    private bool IsStarted { get; set; } 
-    private bool _isDarkMode;
-    
-    private MudTheme _theme = new();
 
+    private bool IsStarted { get; set; } = false;
+    private bool _isDarkMode;
+    private bool IsFinal { get; set; } = false;
+    MudChip[] Chips = new MudChip[4];
+    private Color[] colors = new Color[]{ Color.Primary, Color.Secondary, Color.Tertiary, Color.Warning };
+    public int TimeValue { get; set; }
+    private Question? SelectQuestion { get; set; }
     private MudThemeProvider _mudThemeProvider;
     private HubConnection hubConnection = null!;
     private HostSession? Session { get; set; }
+    private bool IsGame { get; set; } = true;
+    
+    private bool _disposed;
+
+    public void Dispose() => _disposed = true;
+    
+    public async Task SimulateProgress()
+    {
+        TimeValue = 1;
+        
+        do
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            TimeValue += 1;
+            StateHasChanged();
+            await Task.Delay(100);
+
+        } while (TimeValue < 100);
+    }
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -72,6 +163,7 @@ else
         hubConnection.On<HostSession>("Created", session =>
         {
             Session = session;
+            StateHasChanged();
         });
 
         hubConnection.On<PlayerSession>("ConnectedNewPlayer", playerSession =>
@@ -79,14 +171,41 @@ else
             Session?.Players?.TryAdd(playerSession.Id,playerSession);
             StateHasChanged();
         });
+        
+        hubConnection.On<Guid,int>("UserGotAnswer", (playerSessionId,scores) =>
+        {
+            Session!.Players[playerSessionId].Score = scores;
+            StateHasChanged();
+        });
+        
 
         await hubConnection.StartAsync();
+    }
+
+    private async Task CreateLobby()
+    {
         await hubConnection.SendAsync("Create",0,int.Parse(TestId));
     }
 
-    private void Start()
+    private async Task Start()
     {
-        IsStarted = !IsStarted;
+        await hubConnection.SendAsync("StartGame", Session.Id);
+        StateHasChanged();
+        foreach (var item in Session.Test.Questions)
+        {
+            SelectQuestion = item;
+            IsGame = true;
+            IsStarted = true;
+            await hubConnection.SendAsync("GetQuestion",Session.Id,item);
+    //TODO запустить таймер
+            await SimulateProgress();
+            await hubConnection.SendAsync("Finish",Session.Id);
+            IsGame = false;
+            await SimulateProgress();
+        }
+        IsFinal = true;
+        await hubConnection.SendAsync("FullFinish",Session.Id);
+        
     }
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
