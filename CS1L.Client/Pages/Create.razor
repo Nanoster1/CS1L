@@ -5,7 +5,7 @@
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 
 @*<MudButton OnClick="Save">Сохранить</MudButton>*@
-<MudImage Src="images/name.png" Alt="VQuiz" Elevation="25" Class="rounded-lg"
+<MudImage Src="images/name.png" Alt="VQuiz" Elevation="0" Class="rounded-lg"
           Style="height:5vh; width:auto; top:5px; position: absolute;" />
 <MudContainer Class="d-flex flex-column gap-12">
     
@@ -31,7 +31,7 @@
 
     <MudIconButton Class="add-button" Icon="@Icons.Material.Filled.Add" Variant="Variant.Outlined" OnClick="AddQuestion" Style="width: fit-content; margin: auto;"></MudIconButton>
     <MudContainer class="d-flex flex-row justify-space-between gap-1">
-        <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Выйти без сохранения</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="GoMain">Выйти без сохранения</MudButton>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Save">Сохранить</MudButton>
     </MudContainer>
 </MudContainer>
@@ -60,9 +60,9 @@
     List<Question> Questions = new List<Question>();
 
     
-    protected async Task OnInitializedAsync()
+    private void GoMain()
     {
-      
+        NavigationManager.NavigateTo($"/");
     }
 
     private void AddQuestion()

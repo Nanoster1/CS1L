@@ -10,32 +10,32 @@
 <MudContainer Class="container d-flex flex-column gap-10" Style="width:60vw;">
     <MudButton OnClick="ShowCreateTestMessage" Variant="Variant.Outlined" Color="Color.Primary">Новый тест</MudButton>
     <MudButton OnClick="ShowConnectMessage" Variant="Variant.Outlined" Color="Color.Primary">Присоединиться</MudButton>
-    <MudButton Variant="Variant.Outlined" Color="Color.Primary">Мои тесты</MudButton>
     <MudButton OnClick="GoTableTests" Variant="Variant.Outlined" Color="Color.Primary">Все тесты</MudButton>
 </MudContainer>
 
-<MudMessageBox @ref="ConnectBox" Title="Соединение" CancelText="Отмена">
+<MudMessageBox @ref="ConnectBox" Title="Вход" CancelText="Отмена">
     <MessageContent>
         <MudText>Введите ключ:</MudText>
         <MudTextField @bind-Value="ConnectKey" ></MudTextField>
     </MessageContent>
     <YesButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" >Присоединиться</MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Primary" >Присоединиться</MudButton>
     </YesButton>
 </MudMessageBox>
 
-<MudMessageBox @ref="NameTestBox" Title="Тест" CancelText="Отмена">
+<MudMessageBox @ref="NameTestBox" Title="Создать тест" CancelText="Отмена">
     <MessageContent>
         <MudText>Введите название теста:</MudText>
-        <MudTextField @bind-Value="NameTest" ></MudTextField>
+        <MudTextField  Counter="5" Validation="@(new Func<string, IEnumerable<string>>(MinCharacters))" @bind-Value="NameTest" ></MudTextField>
     </MessageContent>
     <YesButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" >Продолжить</MudButton>
+        <MudButton Disabled="IsMinLenght" Variant="Variant.Text" Color="Color.Primary" >Продолжить</MudButton>
     </YesButton>
 </MudMessageBox>
 
 @code{
     private bool _isDarkMode;
+    private bool IsMinLenght { get; set; } = true;
     public string NameTest = String.Empty;
     public string ConnectKey = String.Empty;
     private MudThemeProvider _mudThemeProvider;
@@ -74,7 +74,15 @@
         StateHasChanged();
     }
     
-    
+    private IEnumerable<string> MinCharacters(string ch)
+    {
+        if (!string.IsNullOrEmpty(ch) && 5 >= ch?.Length)
+        {
+            yield return "Минимум 5 символов";
+        }
+        IsMinLenght = false;
+
+    }
     
     private async Task GoTableTests()
     {

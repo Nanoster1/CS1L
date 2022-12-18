@@ -3,6 +3,7 @@
 @using CS1L.Shared.Models.Sessions
 @using CS1L.Shared.Models.Tests
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JS
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 
 
@@ -14,18 +15,18 @@
 
 @if (Session is null)
 {
-    <MudCard Outlined="true" Class="d-flex justify-space-around">
-        <MudCardContent>
+    <MudCard Outlined="true" >
+        <MudCardContent Style="display: flex; justify-content: center;">
             <MudText>Создание лобби</MudText>
         </MudCardContent>
-        <MudCardActions>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateLobby">Создать</MudButton>
+        <MudCardActions Style="display: flex; justify-content: center;">
+            <MudButton OnClick="CreateLobby">Создать</MudButton>
         </MudCardActions>
     </MudCard>
 }
 else if(!IsStarted)
 {
-    <MudCard Outlined="true" Class="d-flex justify-space-around">
+    <MudCard Outlined="true" >
         <MudCardContent>
             <MudText>Список игроков:</MudText>
             <MudStack>
@@ -42,11 +43,18 @@ else if(!IsStarted)
                 }
                 
             </MudStack>
-            <MudText>Ключ для подключения: @Session.Id</MudText>
+            <MudContainer Class="pl-0 mt-4">
+                <MudText >Ключ для подключения:</MudText>
+                <MudText >@Session.Id</MudText>
+            </MudContainer>
+            
         </MudCardContent>
-        <MudCardActions>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Start">Начать</MudButton>
+        <MudCardActions Style="display: flex; justify-content: center;">
+            <MudButton Variant="Variant.Outlined" Style="width: 40%" Color="Color.Success" OnClick="Start">Начать</MudButton>
         </MudCardActions>
+        <MudContainer Class="my-4" Style="display: flex; justify-content: center;">
+            <div id="qrcode"></div>
+        </MudContainer>
     </MudCard>
 }
 else if(IsGame)
@@ -59,6 +67,9 @@ else if(IsGame)
         <MudText Style="text-align: justify;" Typo="Typo.subtitle1">@SelectQuestion.Text</MudText>
 
         <MudContainer Style="display: flex; flex-direction:column; width: 80vw; padding-bottom: 20px;">
+            <!--TODO Надя: схемы отображения вопросов
+            Пока 4 варианта 
+            -->
             @for (int i = 0; i < Chips.Length; i++)
             { //Todo цвет правильной
                 <MudChip Style="height: 10vh;" Color="@colors[i]" Text="@SelectQuestion.Answers[i].Text"></MudChip>
@@ -157,10 +168,11 @@ else
             .WithUrl(NavigationManager.ToAbsoluteUri("/session"))
             .Build();
 
-        hubConnection.On<HostSession>("Created", session =>
+        hubConnection.On<HostSession>("Created", async session =>
         {
             Session = session;
             StateHasChanged();
+            await MakeCode(Session.Id.ToString());
         });
 
         hubConnection.On<PlayerSession>("ConnectedNewPlayer", playerSession =>
@@ -214,4 +226,8 @@ else
         }
     }
     
+    public async Task MakeCode(string text)
+    {
+        await JS.InvokeVoidAsync("makeCode", text, "qrcode");
+    }
 }

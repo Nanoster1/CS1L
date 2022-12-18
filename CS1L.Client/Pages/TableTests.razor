@@ -5,28 +5,42 @@
 @inject NavigationManager NavigationManager
 
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
-<MudImage Src="images/name.png" Alt="VQuiz" Elevation="25" Class="rounded-lg"
+<MudImage Src="images/name.png" Alt="VQuiz" Elevation="0" Class="rounded-lg"
           Style="height:5vh; width:auto; top:5px; position: absolute;" />
 
 <MudContainer>
 
-    <!--TODO рут на главную страницу-->
-    <MudIconButton Color="Color.Primary" Style="top:100px; position:absolute;" Variant="Variant.Outlined">
+    
+    <MudIconButton OnClick="GoMain" Color="Color.Primary" Style="top:100px; position:absolute;" Variant="Variant.Outlined">
                            <MudText>Назад</MudText>
     </MudIconButton>
     <MudStack Style="display: flex">
-        @foreach(var item in AllTests)
-        { 
-            <MudContainer Style="display: flex; flex-direction:row; align-items:center; justify-content:center; gap:7vw;">
-                <MudContainer Class="flex-grow-1 order-0">
-                    <MudText Style="font-size: x-large;">@item.Name</MudText>
+        <MudContainer Class="mb-5" Style="display: flex; flex-direction:row; align-items:center; justify-content:center; gap:7vw;">
+            <MudContainer Class="flex-grow-1 order-0">
+                <MudText Align="Align.Center">Название</MudText>
+            </MudContainer>
+            <MudContainer Class="order-2">
+                <MudText Align="Align.Center">Кол-во вопросов</MudText>
+            </MudContainer>
+            <MudContainer  Class="order-2">
+                <MudText Align="Align.Center">Создать лобби</MudText>
+            </MudContainer>
+            @*<MudIconButton Style="height: 50px; width: 50px;" Class="order-3" Icon="@Icons.Material.Filled.ArrowForwardIos"
+                       Variant="Variant.Outlined" OnClick="() => { CreateLobby(item.Id); }"/>*@
+        </MudContainer>
+        @foreach (var item in AllTests)
+        {
+            <MudContainer  Class="border-b-1 border-solid mud-border-primary" Style="display: flex; height: 60px; flex-direction:row; align-items:center; justify-content:center; gap:7vw;">
+                <MudContainer Style="padding-left: 0px; overflow-x:hidden;" Class="flex-grow-1 order-0">
+                    <MudText Align="Align.Left" >@item.Name</MudText>
                 </MudContainer>
                 <MudContainer Class="order-2">
-                    <MudText Style="font-size: x-large;">@item.Questions.Count</MudText>
+                    <MudText  >@item.Questions.Count</MudText>
                 </MudContainer>
 
-                <MudIconButton Style="height: 50px; width: 50px;" Class="order-3" Icon="@Icons.Material.Filled.ArrowForwardIos"
-                           Variant="Variant.Outlined" OnClick="() => { CreateLobby(item.Id); }"/>
+                <MudIconButton Style="height: 50px; width: 50px;" Color="Color.Success" Class="order-3" Icon="@Icons.Filled.ArrowForwardIos"
+                               Variant="Variant.Text" OnClick="() => { CreateLobby(item.Id); }"/>
+                
             </MudContainer>
         }
     </MudStack>
@@ -55,23 +69,16 @@
     
     protected override async Task OnInitializedAsync()
     {
-        /*AllTests = new List<Test>()
-        {
-            new Test()
-            {
-                Name = "Название побольше для 11б",
-                Questions = new List<Question>()
-                {
-                    new Question(),
-                    new Question()
-                }
-            }
-        };*/
-     AllTests = (await HttpClient.GetFromJsonAsync<List<Test>>("tests"))!;
+        AllTests = (await HttpClient.GetFromJsonAsync<List<Test>>("tests"))!;
     }
 
-    async Task CreateLobby(int TestId)
-    { //TODO Добавить id юзера
+    private void GoMain()
+    {
+        NavigationManager.NavigateTo($"/");
+    }
+    
+    void CreateLobby(int TestId)
+    { 
         NavigationManager.NavigateTo($"/{TestId}/lobby/host");
     }
 }
