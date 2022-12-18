@@ -8,29 +8,29 @@
           Style="height:5vh; width:auto; top:5px; position: absolute;" />
 
 <MudContainer Class="container d-flex flex-column gap-10" Style="width:60vw;">
-    <MudButton OnClick="ShowCreateTestMessage" Variant="Variant.Outlined" Color="Color.Primary">Новая викторина</MudButton>
+    <MudButton OnClick="ShowCreateTestMessage" Variant="Variant.Outlined" Color="Color.Primary">Новый тест</MudButton>
     <MudButton OnClick="ShowConnectMessage" Variant="Variant.Outlined" Color="Color.Primary">Присоединиться</MudButton>
-    <MudButton Variant="Variant.Outlined" Color="Color.Primary">Мои викторины</MudButton>
-    <MudButton OnClick="GoTableTests" Variant="Variant.Outlined" Color="Color.Primary">Все викторины</MudButton>
+    <MudButton Variant="Variant.Outlined" Color="Color.Primary">Мои тесты</MudButton>
+    <MudButton OnClick="GoTableTests" Variant="Variant.Outlined" Color="Color.Primary">Все тесты</MudButton>
 </MudContainer>
 
-<MudMessageBox @ref="ConnectBox" Title="Warning" CancelText="Cancel">
+<MudMessageBox @ref="ConnectBox" Title="Соединение" CancelText="Отмена">
     <MessageContent>
         <MudText>Введите ключ:</MudText>
         <MudTextField @bind-Value="ConnectKey" ></MudTextField>
     </MessageContent>
     <YesButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Error" >Присоединиться</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" >Присоединиться</MudButton>
     </YesButton>
 </MudMessageBox>
 
-<MudMessageBox @ref="NameTestBox" Title="Warning" CancelText="Cancel">
+<MudMessageBox @ref="NameTestBox" Title="Тест" CancelText="Отмена">
     <MessageContent>
         <MudText>Введите название теста:</MudText>
         <MudTextField @bind-Value="NameTest" ></MudTextField>
     </MessageContent>
     <YesButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Error" >Продолжить</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" >Продолжить</MudButton>
     </YesButton>
 </MudMessageBox>
 
