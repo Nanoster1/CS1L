@@ -1,5 +1,7 @@
 ﻿@page "/{TestId}/point/{NumberPointsTeams}"
 @using CS1L.Shared.Models.Sessions
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
+
 
 @foreach (var item in HostSession.Players)
 {
@@ -22,5 +24,18 @@
 @code {
     HostSession HostSession = new HostSession();
     
-    
+    private bool _isDarkMode;
+
+    private MudTheme _theme = new();
+
+    private MudThemeProvider _mudThemeProvider;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            StateHasChanged();
+        }
+    }
 }
